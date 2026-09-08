@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2026 즐거운 제주도 수학여행 - 상모고등학교</title>
+  <style>
+    :root {
+      --primary: #0076c8;
+      --primary-dark: #005a9c;
+      --accent: #ff5722;
+      --bg-gray: #f4f6f9;
+      --card-border: #e2e8f0;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --warn-bg: #fef9c3;
+      --warn-border: #fde047;
+      --warn-text: #854d0e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+    body { background-color: var(--bg-gray); color: var(--text-main); line-height: 1.5; padding-bottom: 60px; }
+
+    header {
+      background: linear-gradient(135deg, #008be5 0%, #0060aa 100%);
+      color: #fff;
+      padding: 16px 20px 20px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .badge-group { display: flex; gap: 8px; margin-bottom: 10px; }
+    .badge { font-size: 12px; font-weight: bold; padding: 3px 10px; border-radius: 12px; display: inline-block; }
+    .badge-school { background-color: rgba(255,255,255,0.25); color: #fff; }
+    .badge-role { background-color: var(--accent); color: #fff; }
+    .title-area h1 { font-size: 22px; font-weight: 800; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+    .title-area p { font-size: 13px; opacity: 0.9; font-weight: 500; }
+
+    .tab-bar {
+      display: flex; gap: 8px; overflow-x: auto; padding: 12px 20px; background: #006eb8;
+      scrollbar-width: none;
+    }
+    .tab-bar::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex-shrink: 0; background: rgba(255,255,255,0.18); color: #fff; border: none;
+      padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;
+    }
+    .tab-btn.active { background: #fff; color: var(--primary-dark); font-weight: 800; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+
+    .container { max-width: 1200px; margin: 16px auto; padding: 0 16px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .alert-banner {
+      background: var(--warn-bg); border: 1px solid var(--warn-border); color: var(--warn-text);
+      padding: 12px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+    }
+
+    .sub-filter-bar { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; }
+    .filter-btn {
+      padding: 8px 16px; border-radius: 18px; border: 1px solid #cbd5e1; background: #fff;
+      font-size: 13px; font-weight: bold; cursor: pointer; color: #475569; display: flex; align-items: center; gap: 6px;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover { background: #f1f5f9; }
+    .filter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+
+    .card {
+      background: #fff; border-radius: 10px; border: 1px solid var(--card-border);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.04); margin-bottom: 16px; overflow: hidden;
+    }
+    .card-header {
+      background: var(--primary); color: #fff; padding: 10px 16px; font-size: 14px;
+      font-weight: bold; display: flex; justify-content: space-between; align-items: center;
+    }
+    .card-header.green { background: #10b981; }
+    .card-header.purple { background: #6366f1; }
+    .card-header.slate { background: #1e40af; }
+    .card-header .badge-count {
+      background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 10px; font-size: 11px;
+    }
+
+    /* 버스 탭 전용 가로 2분할 탭 (경산고 스타일 일치) */
+    .bus-mode-tab-bar {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;
+    }
+    .bus-mode-btn {
+      padding: 14px; text-align: center; border-radius: 10px; border: 1px solid #cbd5e1;
+      background: #fff; cursor: pointer; transition: all 0.2s;
+    }
+    .bus-mode-btn .mode-title { font-size: 15px; font-weight: 800; color: #334155; display: block; }
+    .bus-mode-btn .mode-sub { font-size: 12px; color: #64748b; margin-top: 3px; display: block; }
+    .bus-mode-btn.active {
+      background: #0284c7; border-color: #0284c7; box-shadow: 0 3px 8px rgba(2,132,199,0.25);
+    }
+    .bus-mode-btn.active .mode-title, .bus-mode-btn.active .mode-sub { color: #fff; }
+
+    /* 버스 카드 상세 레이아웃 (경산고 스타일 일치) */
+    .bus-card {
+      background: #fff; border: 1px solid var(--card-border); border-radius: 10px;
+      margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); overflow: hidden;
+    }
+    .bus-card-top {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 16px; background: #f8fafc; border-bottom: 1px solid #f1f5f9;
+    }
+    .bus-id-badge {
+      width: 28px; height: 28px; background: var(--primary); color: #fff; font-size: 14px;
+      font-weight: 800; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px;
+    }
+    .bus-title-text { font-size: 14px; font-weight: 800; color: #1e293b; }
+    .bus-count-info { font-size: 12px; color: #64748b; font-weight: 600; }
+    .bus-team-tag {
+      background: #0284c7; color: #fff; font-size: 11px; font-weight: 800;
+      padding: 3px 8px; border-radius: 4px;
+    }
+    .bus-card-teacher {
+      padding: 8px 16px; background: #fff; font-size: 12px; color: #475569;
+      border-bottom: 1px solid #f8fafc; display: flex; align-items: center; gap: 8px;
+    }
+    .teacher-pill {
+      background: #f1f5f9; padding: 2px 8px; border-radius: 12px; font-weight: 700; color: #1e293b;
+    }
+    .bus-card-students {
+      padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 6px; background: #fff;
+    }
+    .bus-st-pill {
+      background: #f1f5f9; border: 1px solid #e2e8f0; padding: 4px 8px; border-radius: 4px;
+      font-size: 12px; font-weight: 600; color: #334155;
+    }
+
+    /* 검색창 스타일 */
+    .search-input-box { width: 100%; position: relative; margin-bottom: 12px; }
+    .search-input-box input {
+      width: 100%; padding: 12px 16px 12px 42px; border-radius: 24px; border: 1px solid #cbd5e1;
+      font-size: 14px; outline: none; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .search-input-box input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,118,200,0.15); }
+    .search-input-box .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 16px; color: #64748b; }
+
+    /* 방배정 카드 그리드 */
+    .room-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; padding: 12px; }
+    .room-card-item { background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .room-card-header { background: #0284c7; color: #fff; text-align: center; padding: 7px 10px; font-size: 13px; font-weight: 800; }
+    .room-card-header.header-teacher { background: #475569; }
+    .room-card-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+    .room-member { font-size: 13px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 4px; }
+    .room-member .leader-crown { color: #f59e0b; font-size: 12px; }
+
+    /* 연락망 */
+    .contact-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; }
+    .contact-item:last-child { border-bottom: none; }
+    .contact-left { display: flex; align-items: center; gap: 12px; }
+    .contact-avatar { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; background: #e0f2fe; flex-shrink: 0; }
+    .avatar-female { background: #fce7f3; }
+    .avatar-star { background: #fef3c7; }
+    .contact-role { font-size: 11px; color: var(--text-muted); }
+    .contact-name { font-size: 14px; font-weight: bold; color: #1e293b; }
+    .star-badge { color: #eab308; font-size: 14px; margin-left: 2px; }
+    .call-btn { background: #10b981; color: #fff; text-decoration: none; padding: 6px 14px; border-radius: 16px; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 4px; }
+
+    /* 일정표 스타일 */
+    .day-square-bar { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; }
+    .day-square-btn { min-width: 70px; padding: 8px 12px; background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; text-align: center; cursor: pointer; transition: all 0.2s; }
+    .day-square-btn .d-title { font-size: 12px; font-weight: 800; display: block; color: #1e293b; }
+    .day-square-btn .d-sub { font-size: 11px; color: #64748b; display: block; margin-top: 2px; }
+    .day-square-btn.active { background: var(--primary); border-color: var(--primary); }
+    .day-square-btn.active .d-title, .day-square-btn.active .d-sub { color: #fff; }
+
+    .team-tab-container { display: flex; width: 100%; background: #f1f5f9; border-radius: 8px; padding: 4px; gap: 4px; margin-bottom: 16px; overflow-x: auto; }
+    .team-tab-btn { flex: 1; min-width: 140px; padding: 10px 12px; text-align: center; border: none; background: transparent; border-radius: 6px; font-size: 13px; font-weight: 700; color: #475569; cursor: pointer; transition: all 0.2s; }
+    .team-tab-btn.active { background: var(--primary-dark); color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+
+    .timeline-clean { padding: 8px 16px; }
+    .tl-clean-row { display: flex; align-items: center; gap: 14px; padding: 11px 0; border-bottom: 1px solid #f8fafc; }
+    .tl-clean-row:last-child { border-bottom: none; }
+    .tl-clean-time { width: 85px; font-size: 13px; font-weight: 800; color: var(--primary); flex-shrink: 0; }
+    .tl-clean-bullet { width: 8px; height: 8px; background: #38bdf8; border-radius: 50%; flex-shrink: 0; }
+    .tl-clean-text { font-size: 13px; font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 6px; }
+
+    .student-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1px; background: #e2e8f0; border: 1px solid #e2e8f0; }
+    .student-cell { background: #fff; padding: 8px 10px; text-align: center; }
+    .student-no { font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 2px; }
+    .student-name { font-size: 13px; font-weight: 600; }
+    .tag-help { background: #fce7f3; color: #be185d; font-size: 10px; padding: 1px 4px; border-radius: 4px; margin-left: 2px; }
+    .tag-flight { font-size: 10px; padding: 1px 4px; border-radius: 4px; margin-left: 4px; }
+    .tag-a { background: #e0f2fe; color: #0284c7; }
+    .tag-k { background: #fef3c7; color: #d97706; }
+
+    .table-container { width: 100%; overflow-x: auto; }
+    table.data-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+    table.data-table th { background: #f8fafc; color: #475569; padding: 10px 14px; border-bottom: 2px solid #e2e8f0; white-space: nowrap; }
+    table.data-table td { padding: 9px 14px; border-bottom: 1px solid #f1f5f9; }
+    table.data-table tr:hover { background: #f8fafc; }
+
+    .floor-visual-box { padding: 16px; background: #f8fafc; border-radius: 8px; }
+    .legend-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; font-size: 12px; font-weight: bold; }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-dot { width: 14px; height: 14px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.1); }
+
+    .wing-title { font-size: 13px; font-weight: bold; margin: 12px 0 6px 0; color: #334155; display: flex; align-items: center; gap: 6px; }
+    .room-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(115px, 1fr)); gap: 8px; margin-bottom: 12px; }
+    .room-card { padding: 10px 6px; border-radius: 6px; border: 1px solid #cbd5e1; text-align: center; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+    .room-card .room-num { font-size: 13px; font-weight: 800; display: block; }
+    .room-card .room-desc { font-size: 11px; display: block; margin-top: 3px; }
+    
+    .type-girl { background: #fff1f2; border-color: #fecdd3; color: #9f1239; }
+    .type-boy { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
+    .type-teacher { background: #fef3c7; border-color: #fde68a; color: #92400e; font-weight: bold; }
+    .type-facility { background: #e0f2fe; border-color: #bae6fd; color: #075985; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge-group">
+      <span class="badge badge-school">상모고등학교</span>
+      <span class="badge badge-role">교사용</span>
+    </div>
+    <div class="title-area">
+      <h1>2026 즐거운 제주도 수학여행</h1>
+      <p id="header-desc"></p>
+    </div>
+  </header>
+
+  <nav class="tab-bar">
+    <button class="tab-btn" onclick="switchTab('tab-students')">👥 참가학생</button>
+    <button class="tab-btn" onclick="switchTab('tab-contacts')">📞 업무연락망</button>
+    <button class="tab-btn active" onclick="switchTab('tab-bus')">🚌 버스배정</button>
+    <button class="tab-btn" onclick="switchTab('tab-rooms')">🛏️ 방배정</button>
+    <button class="tab-btn" onclick="switchTab('tab-schedule')">📅 일정표</button>
+    <button class="tab-btn" onclick="switchTab('tab-lodging')">📖 숙소배치도</button>
+    <button class="tab-btn" onclick="switchTab('tab-vendor')">🏛️ 계약업체</button>
+    <button class="tab-btn" onclick="switchTab('tab-safety')">🌙 야간지도·안전</button>
+  </nav>
+
+  <main class="container">
+
+    <!-- TAB: 버스배정 (학교<->공항 7대 vs 제주현지 9대 가로 탭 분할) -->
+    <section id="tab-bus" class="tab-content active">
+      <!-- 상단 모드 탭 (경산고 스타일 일치) -->
+      <div class="bus-mode-tab-bar">
+        <div class="bus-mode-btn active" id="btn-bus-school" onclick="selectBusMode('school')">
+          <span class="mode-title">🏫 학교 ➔ 공항 (1·4일차)</span>
+          <span class="mode-sub">전세버스 7대 운영</span>
+        </div>
+        <div class="bus-mode-btn" id="btn-bus-jeju" onclick="selectBusMode('jeju')">
+          <span class="mode-title">🌴 제주 현지 (전일정)</span>
+          <span class="mode-sub">전세버스 9대 운영</span>
+        </div>
+      </div>
+
+      <div class="alert-banner" id="bus-notice-banner">
+        🚌 1일차 학교 ➔ 대구공항 및 4일차 귀향 시 전세버스 7대(45인승) 배정 현황입니다.
+      </div>
+
+      <!-- 버스 카드 렌더링 컨테이너 -->
+      <div id="bus-cards-container"></div>
+    </section>
+
+    <!-- TAB: 방배정 -->
+    <section id="tab-rooms" class="tab-content">
+      <div class="search-input-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="room-search-input" placeholder="학생 이름 또는 호실(예: 321)로 검색..." oninput="handleRoomSearch(this.value)" />
+      </div>
+
+      <div class="sub-filter-bar" id="room-filter-bar">
+        <button class="filter-btn active" onclick="filterRoomGroup('all')">전체 (59실)</button>
+        <button class="filter-btn" onclick="filterRoomGroup('team1')">1조 (1·7·8반)</button>
+        <button class="filter-btn" onclick="filterRoomGroup('team2')">2조 (2·3·6반)</button>
+        <button class="filter-btn" onclick="filterRoomGroup('team3')">3조 (4·5·9반)</button>
+        <button class="filter-btn" onclick="filterRoomGroup('teachers')">교직원실 (9실)</button>
+      </div>
+
+      <div id="rooms-view-container"></div>
+    </section>
+
+    <!-- TAB: 일정표 -->
+    <section id="tab-schedule" class="tab-content">
+      <div class="alert-banner">
+        ✈️ 아시아나팀(1진): 9/15 09:30 OZ8123 · 대한항공팀(2진): 9/15 11:05 KE1569 / 숙소: 더 포그레이스 리조트
+      </div>
+
+      <div class="day-square-bar">
+        <div class="day-square-btn active" onclick="selectScheduleDay('d1', this)">
+          <span class="d-title">1일차</span>
+          <span class="d-sub">9/15 화</span>
+        </div>
+        <div class="day-square-btn" onclick="selectScheduleDay('d2', this)">
+          <span class="d-title">2일차</span>
+          <span class="d-sub">9/16 수</span>
+        </div>
+        <div class="day-square-btn" onclick="selectScheduleDay('d3', this)">
+          <span class="d-title">3일차</span>
+          <span class="d-sub">9/17 목</span>
+        </div>
+        <div class="day-square-btn" onclick="selectScheduleDay('d4', this)">
+          <span class="d-title">4일차</span>
+          <span class="d-sub">9/18 금</span>
+        </div>
+      </div>
+
+      <div class="team-tab-container" id="team-tab-bar"></div>
+
+      <div class="card">
+        <div class="card-header" id="sch-view-header">
+          <span id="sch-header-title">일정표</span>
+          <span class="badge-count" id="sch-header-badge">식사 안내</span>
+        </div>
+        <div class="timeline-clean" id="sch-timeline-content"></div>
+      </div>
+    </section>
+
+    <!-- TAB: 업무연락망 -->
+    <section id="tab-contacts" class="tab-content">
+      <div class="alert-banner">
+        📌 전화번호를 탭하면 바로 전화 연결됩니다.
+      </div>
+      <div id="contacts-container"></div>
+    </section>
+
+    <!-- TAB: 참가학생 -->
+    <section id="tab-students" class="tab-content">
+      <div class="sub-filter-bar" id="student-filter-bar">
+        <button class="filter-btn active" onclick="filterStudentView('all')">👥 전체 219명</button>
+        <button class="filter-btn" onclick="filterStudentView('teachers')">📑 교직원 14명</button>
+        <button class="filter-btn" onclick="filterStudentView('jin1')">✈️ 1진 (1·2·4·5·6반 / 아시아나)</button>
+        <button class="filter-btn" onclick="filterStudentView('jin2')">✈️ 2진 (1·3·7·8·9반 / 대한항공)</button>
+      </div>
+
+      <div class="alert-banner" id="help-student-banner"></div>
+      <div id="students-container"></div>
+    </section>
+
+    <!-- TAB: 숙소배치도 -->
+    <section id="tab-lodging" class="tab-content">
+      <div class="sub-filter-bar">
+        <button class="filter-btn active" onclick="showFloorMap('f1')">1F 부대시설</button>
+        <button class="filter-btn" onclick="showFloorMap('f2')">2F 여학생·인솔교사실</button>
+        <button class="filter-btn" onclick="showFloorMap('f3')">3F 남학생·인솔교사실</button>
+        <button class="filter-btn" onclick="showFloorMap('f5')">5F 남학생·인솔교사실</button>
+        <button class="filter-btn" onclick="showFloorMap('f6')">6F 교장선생님실</button>
+      </div>
+
+      <div class="card">
+        <div class="card-header" id="floor-header"><span>1F 안내도 : 로비, 레스토랑, 세미나룸, 편의점</span></div>
+        <div class="floor-visual-box">
+          <div class="legend-bar">
+            <div class="legend-item"><div class="legend-dot" style="background:#fff1f2; border-color:#fecdd3;"></div> 여학생 객실</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#f0fdf4; border-color:#bbf7d0;"></div> 남학생 객실</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#fef3c7; border-color:#fde68a;"></div> 인솔교사실</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#e0f2fe; border-color:#bae6fd;"></div> 공용/부대시설</div>
+          </div>
+
+          <div id="map-f1">
+            <div class="wing-title">📍 1층 본관 주요 편의시설</div>
+            <div class="room-grid">
+              <div class="room-card type-facility"><span class="room-num">로비 / 프론트</span><span class="room-desc">안내데스크</span></div>
+              <div class="room-card type-facility"><span class="room-num">세미나룸</span><span class="room-desc">무대 및 행사</span></div>
+              <div class="room-card type-facility"><span class="room-num">레스토랑</span><span class="room-desc">조·석식 식당</span></div>
+              <div class="room-card type-facility"><span class="room-num">편의점</span><span class="room-desc">1층 내부</span></div>
+              <div class="room-card type-facility"><span class="room-num">Kids Zone</span><span class="room-desc">놀이공간</span></div>
+              <div class="room-card type-facility"><span class="room-num">외부공연장</span><span class="room-desc">야외무대</span></div>
+              <div class="room-card type-facility"><span class="room-num">세탁실</span><span class="room-desc">코인세탁기</span></div>
+              <div class="room-card type-facility"><span class="room-num">공용 화장실</span><span class="room-desc">복도 위치</span></div>
+            </div>
+          </div>
+
+          <div id="map-f2" style="display:none;">
+            <div class="wing-title">🚪 서관 및 남관 (여학생 & 교사실 218, 227호)</div>
+            <div class="room-grid">
+              <div class="room-card type-girl"><span class="room-num">202호</span><span class="room-desc">7반 여 (4)</span></div>
+              <div class="room-card type-girl"><span class="room-num">203호</span><span class="room-desc">7반 여 (4)</span></div>
+              <div class="room-card type-girl"><span class="room-num">205호</span><span class="room-desc">7반 여 (4)</span></div>
+              <div class="room-card type-girl"><span class="room-num">206호</span><span class="room-desc">7반 여 (3)</span></div>
+              <div class="room-card type-girl"><span class="room-num">207호</span><span class="room-desc">9반 여 (3)</span></div>
+              <div class="room-card type-girl"><span class="room-num">208호</span><span class="room-desc">9반 여 (3)</span></div>
+              <div class="room-card type-girl"><span class="room-num">210호</span><span class="room-desc">1반 여 (4)</span></div>
+              <div class="room-card type-girl"><span class="room-num">211호</span><span class="room-desc">1반 여 (3)</span></div>
+              <div class="room-card type-girl"><span class="room-num">212호</span><span class="room-desc">1반 여 (3)</span></div>
+              <div class="room-card type-girl"><span class="room-num">213호</span><span class="room-desc">2반 여 (4)</span></div>
+              <div class="room-card type-girl"><span class="room-num">215호</span><span class="room-desc">2반 여 (4)</span></div>
+              <div class="room-card type-girl"><span class="room-num">216호</span><span class="room-desc">3반 여 (4)</span></div>
+              <div class="room-card type-girl"><span class="room-num">217호</span><span class="room-desc">3반 여 (2)</span></div>
+              <div class="room-card type-teacher"><span class="room-num">218호 (교사)</span><span class="room-desc">구민정, 김서진</span></div>
+              <div class="room-card type-girl"><span class="room-num">220호</span><span class="room-desc">4반 여 (4)</span></div>
+              <div class="room-card type-girl"><span class="room-num">221호</span><span class="room-desc">4반 여 (4)</span></div>
+              <div class="room-card type-girl"><span class="room-num">222호</span><span class="room-desc">5반 여 (4)</span></div>
+              <div class="room-card type-girl"><span class="room-num">223호</span><span class="room-desc">5반 여 (4)</span></div>
+              <div class="room-card type-girl"><span class="room-num">225호</span><span class="room-desc">5반 여 (4)</span></div>
+              <div class="room-card type-teacher"><span class="room-num">227호 (교사)</span><span class="room-desc">장지은, 윤연미</span></div>
+            </div>
+          </div>
+
+          <div id="map-f3" style="display:none;">
+            <div class="wing-title">🚪 3층 (남학생 & 6·8반 여학생 & 교사실 310, 311, 327, 336호)</div>
+            <div class="room-grid">
+              <div class="room-card type-girl"><span class="room-num">301호</span><span class="room-desc">6반 여 (3)</span></div>
+              <div class="room-card type-girl"><span class="room-num">302호</span><span class="room-desc">6반 여 (3)</span></div>
+              <div class="room-card type-girl"><span class="room-num">303호</span><span class="room-desc">6반 여 (3)</span></div>
+              <div class="room-card type-girl"><span class="room-num">305호</span><span class="room-desc">8반 여 (4)</span></div>
+              <div class="room-card type-girl"><span class="room-num">306호</span><span class="room-desc">8반 여 (2)</span></div>
+              <div class="room-card type-teacher"><span class="room-num">310호 (교사)</span><span class="room-desc">임미영, 이은주</span></div>
+              <div class="room-card type-teacher"><span class="room-num">311호 (교사)</span><span class="room-desc">장희승 선생님</span></div>
+              <div class="room-card type-boy"><span class="room-num">312호</span><span class="room-desc">5반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">313호</span><span class="room-desc">5반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">315호</span><span class="room-desc">5반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">316호</span><span class="room-desc">6반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">317호</span><span class="room-desc">6반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">319호</span><span class="room-desc">6반 남 (3)</span></div>
+              <div class="room-card type-boy"><span class="room-num">320호</span><span class="room-desc">6반 남 (3)</span></div>
+              <div class="room-card type-boy"><span class="room-num">321호</span><span class="room-desc">1반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">322호</span><span class="room-desc">1반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">323호</span><span class="room-desc">1반 남 (3)</span></div>
+              <div class="room-card type-boy"><span class="room-num">325호</span><span class="room-desc">1반 남 (3)</span></div>
+              <div class="room-card type-teacher"><span class="room-num">327호 (도움)</span><span class="room-desc">박세원, 이지원, 여용민</span></div>
+              <div class="room-card type-boy"><span class="room-num">328호</span><span class="room-desc">2반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">329호</span><span class="room-desc">2반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">330호</span><span class="room-desc">2반 남 (3)</span></div>
+              <div class="room-card type-boy"><span class="room-num">331호</span><span class="room-desc">2반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">332호</span><span class="room-desc">3반 남 (3)</span></div>
+              <div class="room-card type-boy"><span class="room-num">333호</span><span class="room-desc">3반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">335호</span><span class="room-desc">3반 남 (4)</span></div>
+              <div class="room-card type-teacher"><span class="room-num">336호 (부장/교사)</span><span class="room-desc">박원기, 황현수</span></div>
+              <div class="room-card type-boy"><span class="room-num">337호</span><span class="room-desc">3반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">338호</span><span class="room-desc">4반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">339호</span><span class="room-desc">4반 남 (3)</span></div>
+              <div class="room-card type-boy"><span class="room-num">340호</span><span class="room-desc">4반 남 (3)</span></div>
+              <div class="room-card type-boy"><span class="room-num">341호</span><span class="room-desc">4반 남 (3)</span></div>
+              <div class="room-card type-boy"><span class="room-num">342호</span><span class="room-desc">7반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">343호</span><span class="room-desc">7반 남 (4)</span></div>
+            </div>
+          </div>
+
+          <div id="map-f5" style="display:none;">
+            <div class="wing-title">🚪 5층 남학생 및 교사실 501, 517호</div>
+            <div class="room-grid">
+              <div class="room-card type-teacher"><span class="room-num">501호 (교사)</span><span class="room-desc">임나래 선생님</span></div>
+              <div class="room-card type-boy"><span class="room-num">502호</span><span class="room-desc">9반 남 (2)</span></div>
+              <div class="room-card type-boy"><span class="room-num">503호</span><span class="room-desc">9반 남 (2)</span></div>
+              <div class="room-card type-boy"><span class="room-num">505호</span><span class="room-desc">9반 남 (2)</span></div>
+              <div class="room-card type-boy"><span class="room-num">506호</span><span class="room-desc">9반 남 (2)</span></div>
+              <div class="room-card type-boy"><span class="room-num">507호</span><span class="room-desc">9반 남 (2)</span></div>
+              <div class="room-card type-boy"><span class="room-num">510호</span><span class="room-desc">9반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">511호</span><span class="room-desc">8반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">512호</span><span class="room-desc">8반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">513호</span><span class="room-desc">8반 남 (4)</span></div>
+              <div class="room-card type-boy"><span class="room-num">515호</span><span class="room-desc">8반 남 (3)</span></div>
+              <div class="room-card type-boy"><span class="room-num">516호</span><span class="room-desc">8반 남 (3)</span></div>
+              <div class="room-card type-teacher"><span class="room-num">517호 (교사)</span><span class="room-desc">명석현, 김효성</span></div>
+            </div>
+          </div>
+
+          <div id="map-f6" style="display:none;">
+            <div class="wing-title">🚪 6층 최상층 본부실</div>
+            <div class="room-grid">
+              <div class="room-card type-teacher" style="grid-column: span 2;"><span class="room-num">601호 (본부)</span><span class="room-desc">서경미 교장선생님</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB: 계약업체 -->
+    <section id="tab-vendor" class="tab-content">
+      <div class="card">
+        <div class="card-header"><span>✈️ 항공권 예약 내역</span></div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr><th>구분</th><th>구간</th><th>편명</th><th>시간</th><th>좌석</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>아시아나 (왕)</td><td>대구 ➔ 제주</td><td>OZ8123</td><td>09:30 - 10:40</td><td>102석</td></tr>
+              <tr><td>아시아나 (복)</td><td>제주 ➔ 대구</td><td>OZ8126</td><td>17:25 - 18:35</td><td>102석</td></tr>
+              <tr><td>대한항공 (왕)</td><td>대구 ➔ 제주</td><td>KE1569</td><td>11:05 - 12:15</td><td>103석</td></tr>
+              <tr><td>대한항공 (복)</td><td>제주 ➔ 대구</td><td>KE1576</td><td>16:35 - 17:45</td><td>103석</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header green"><span>🏨 숙소 연락처</span></div>
+        <div style="padding: 14px; font-size: 13px;">
+          더 포그레이스 호텔앤리조트 (제주 서귀포시 성산읍 해맞이해안로 2670 / ☎ 064-797-7700)
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB: 안전수칙 -->
+    <section id="tab-safety" class="tab-content">
+      <div class="card">
+        <div class="card-header slate"><span>안전 및 생활지도 지침</span></div>
+        <div style="padding: 16px; font-size: 13px; line-height: 1.8;">
+          • <b>취침 및 점호</b>: 22:00 이후 객실 간 무단 이동 및 외출 엄금<br>
+          • <b>배터리 규정</b>: 보조 배터리는 반드시 기내 휴대(수하물 위탁 절대 금지)<br>
+          • <b>비상 연락망</b>: 응급 상황 발생 시 본부(서경미 교장선생님 / 박원기 부장선생님)로 즉시 연락
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const APP_DATA = {
+      headerDesc: "2026. 9. 15(화) ~ 9. 18(금) · 3박 4일 · 총 219명 (학생 205, 인솔 14)",
+      helpBanner: "⚠️ 도움반 학생 3명(이지원, 여용민, 박세현) 별도 지도교사 인솔 체계 운영 (지도교사: 박세원)",
+      // 학교<->공항 7대 및 제주현지 9대 버스 데이터 구축
+      busData: {
+        school: [
+          {
+            id: "1", title: "1호차 · 아시아나 1진 · 1반(전반) + 2반", teamTag: "아시아나",
+            countInfo: "학생 36명 + 교직원 2명 = 총 38명",
+            teachers: ["장희승", "박원기"],
+            students: ["강민주", "권채원", "김나은", "송윤지", "박시랑", "박시온", "서지민", "김하온", "양다연", "우은채", "김도현", "김우진", "김나경", "안서영", "최은서", "최이서", "노하은", "박은서", "신채원", "최선아", "복준현", "류민현", "조은준", "공민호", "박성주", "박성현", "이영준", "정승용", "박현우", "엄태빈", "이찬민", "김주찬", "이진헌", "임지훈", "박세현", "강태민"]
+          },
+          {
+            id: "2", title: "2호차 · 아시아나 1진 · 4반 + 5반(전반)", teamTag: "아시아나",
+            countInfo: "학생 33명 + 교직원 2명 = 총 35명",
+            teachers: ["임미영", "김서진"],
+            students: ["강민하", "권종범", "김서진", "주지훈", "류동우", "서현서", "손우성", "박현준", "이재현", "허준서", "문서진", "이준영", "전용준", "김태이", "민지윤", "이가영", "이서경", "신예은", "정인아", "이수민", "한세영", "김강민", "신주원", "안예준", "이준호", "양승목", "정재윤", "하준형", "홍석주", "김도훈", "김현무", "위진성", "장주원"]
+          },
+          {
+            id: "3", title: "3호차 · 아시아나 1진 · 5반(후반) + 6반", teamTag: "아시아나",
+            countInfo: "학생 35명 + 교직원 2명 = 총 37명",
+            teachers: ["장지은", "박세원"],
+            students: ["김보은", "김예진", "김한나", "이소윤", "이지윤", "송보민", "최영서", "조효나", "백재은", "김민서", "이수연", "김아진", "권태민", "백승준", "손재협", "신재영", "권현상", "김정욱", "남지현", "임예준", "강한빈", "이세벽", "표준영", "김태민", "유승연", "이동규", "김예림", "유지현", "이채정", "강라연", "김다정", "이민혜", "정서윤", "정희윤", "황지후"]
+          },
+          {
+            id: "4", title: "4호차 · 대한항공 2진 · 1반(후반) + 3반", teamTag: "대한항공",
+            countInfo: "학생 34명 + 교직원 2명 = 총 36명",
+            teachers: ["명석현", "황현수"],
+            students: ["노경민", "박슬빈", "박기성", "안주혁", "이정훈", "임한서", "박제민", "오유찬", "황보찬", "김현찬", "송현민", "최희준", "이지한", "안성빈", "하동엽", "최건희", "장윤성", "이지후", "김진우", "정민재", "안시후", "김산", "신영빈", "정태영", "김진엽", "구교빈", "김명은", "이지원", "황유진", "이효정", "김민서", "이연수", "최은지", "남학생1명"]
+          },
+          {
+            id: "5", title: "5호차 · 대한항공 2진 · 7반", teamTag: "대한항공",
+            countInfo: "학생 23명 + 교직원 2명 = 총 25명",
+            teachers: ["임나래", "서경미(교장)"],
+            students: ["김원우", "문준현", "장민혁", "정서준", "김현우", "이재호", "정성우", "진민호", "노화영", "브루스새라", "손승아", "최인성", "박시영", "신희주", "윤민희", "이주아", "김가연", "김나경", "이채은", "조보빈", "송채은", "오수연", "진아연"]
+          },
+          {
+            id: "6", title: "6호차 · 대한항공 2진 · 8반", teamTag: "대한항공",
+            countInfo: "학생 24명 + 교직원 2명 = 총 26명",
+            teachers: ["윤연미", "김효성"],
+            students: ["강선우", "김윤건", "김태윤", "임영진", "배기문", "윤찬영", "이주헌", "한규인", "김정찬", "김진성", "송현호", "주민상", "강태민", "고도영", "이정우", "김동훈", "김명성", "이현우", "김예나", "김예희", "이가영", "이나영", "엄채영", "장지윤"]
+          },
+          {
+            id: "7", title: "7호차 · 대한항공 2진 · 9반", teamTag: "대한항공",
+            countInfo: "학생 20명 + 교직원 2명 = 총 22명",
+            teachers: ["구민정", "이은주"],
+            students: ["전석찬", "김유신", "육형권", "김두현", "배민준", "이태랑", "이승후", "정재현", "전준서", "이지환", "박진성", "박경호", "이준우", "이승준", "김하은", "김하윤", "우효정", "김가영", "김가현", "한수린"]
+          }
+        ],
+        jeju: [
+          {
+            id: "1", title: "1호차 · 1조 · 1반 (전체 24명)", teamTag: "1조",
+            countInfo: "학생 24명 + 교직원 2명 = 총 26명",
+            teachers: ["명석현", "장희승"],
+            students: ["강민주", "권채원", "김나은", "송윤지", "박시랑", "박시온", "서지민", "김하온", "양다연", "우은채", "김도현", "김우진", "노경민", "박슬빈", "박기성", "안주혁", "이정훈", "임한서", "박제민", "오유찬", "황보찬", "김현찬", "송현민", "최희준"]
+          },
+          {
+            id: "2", title: "2호차 · 2조 · 2반 (전체 24명)", teamTag: "2조",
+            countInfo: "학생 24명 + 교직원 2명 = 총 26명",
+            teachers: ["박원기(부장)", "박세원"],
+            students: ["김나경", "안서영", "최은서", "최이서", "노하은", "박은서", "신채원", "최선아", "복준현", "류민현", "조은준", "공민호", "박성주", "박성현", "이영준", "정승용", "박현우", "엄태빈", "이찬민", "김주찬", "이진헌", "임지훈", "박세현", "강태민"]
+          },
+          {
+            id: "3", title: "3호차 · 2조 · 3반 (전체 22명)", teamTag: "2조",
+            countInfo: "학생 22명 + 교직원 2명 = 총 24명",
+            teachers: ["황현수", "서경미(교장)"],
+            students: ["이지한", "안성빈", "하동엽", "최건희", "장윤성", "이지후", "김진우", "정민재", "안시후", "김산", "신영빈", "정태영", "김진엽", "구교빈", "김명은", "이지원", "황유진", "이효정", "김민서", "이연수", "최은지", "남학생1명"]
+          },
+          {
+            id: "4", title: "4호차 · 3조 · 4반 (전체 21명)", teamTag: "3조",
+            countInfo: "학생 21명 + 교직원 1명 + 현지가이드 = 총 23명",
+            teachers: ["임미영", "현지가이드 1명"],
+            students: ["강민하", "권종범", "김서진", "주지훈", "류동우", "서현서", "손우성", "박현준", "이재현", "허준서", "문서진", "이준영", "전용준", "김태이", "민지윤", "이가영", "이서경", "신예은", "정인아", "이수민", "한세영"]
+          },
+          {
+            id: "5", title: "5호차 · 3조 · 5반 (전체 24명)", teamTag: "3조",
+            countInfo: "학생 24명 + 교직원 1명 + 현지가이드 = 총 26명",
+            teachers: ["김서진", "현지가이드 1명"],
+            students: ["김강민", "신주원", "안예준", "이준호", "양승목", "정재윤", "하준형", "홍석주", "김도훈", "김현무", "위진성", "장주원", "김보은", "김예진", "김한나", "이소윤", "이지윤", "송보민", "최영서", "조효나", "백재은", "김민서", "이수연", "김아진"]
+          },
+          {
+            id: "6", title: "6호차 · 2조 · 6반 (전체 23명)", teamTag: "2조",
+            countInfo: "학생 23명 + 교직원 1명 + 현지가이드 = 총 25명",
+            teachers: ["장지은", "현지가이드 1명"],
+            students: ["권태민", "백승준", "손재협", "신재영", "권현상", "김정욱", "남지현", "임예준", "강한빈", "이세벽", "표준영", "김태민", "유승연", "이동규", "김예림", "유지현", "이채정", "강라연", "김다정", "이민혜", "정서윤", "정희윤", "황지후"]
+          },
+          {
+            id: "7", title: "7호차 · 1조 · 7반 (전체 23명)", teamTag: "1조",
+            countInfo: "학생 23명 + 교직원 1명 + 현지가이드 = 총 25명",
+            teachers: ["임나래", "현지가이드 1명"],
+            students: ["김원우", "문준현", "장민혁", "정서준", "김현우", "이재호", "정성우", "진민호", "노화영", "브루스새라", "손승아", "최인성", "박시영", "신희주", "윤민희", "이주아", "김가연", "김나경", "이채은", "조보빈", "송채은", "오수연", "진아연"]
+          },
+          {
+            id: "8", title: "8호차 · 1조 · 8반 (전체 24명)", teamTag: "1조",
+            countInfo: "학생 24명 + 교직원 2명 = 총 26명",
+            teachers: ["윤연미", "김효성"],
+            students: ["강선우", "김윤건", "김태윤", "임영진", "배기문", "윤찬영", "이주헌", "한규인", "김정찬", "김진성", "송현호", "주민상", "강태민", "고도영", "이정우", "김동훈", "김명성", "이현우", "김예나", "김예희", "이가영", "이나영", "엄채영", "장지윤"]
+          },
+          {
+            id: "9", title: "9호차 · 3조 · 9반 (전체 20명)", teamTag: "3조",
+            countInfo: "학생 20명 + 교직원 2명 = 총 22명",
+            teachers: ["구민정", "이은주"],
+            students: ["전석찬", "김유신", "육형권", "김두현", "배민준", "이태랑", "이승후", "정재현", "전준서", "이지환", "박진성", "박경호", "이준우", "이승준", "김하은", "김하윤", "우효정", "김가영", "김가현", "한수린"]
+          }
+        ]
+      },
+      allClasses: [
+        {
+          classId: "c1", jin: "jin1_2",
+          title: "📁 1반 (1호차 · 1조 · 담임: 명석현 / 인솔: 장희승)",
+          count: "24명 (1~12번: 1진 아시아나 / 13~24번: 2진 대한항공)",
+          students: [
+            {no: "20101", name: "강민주", flight: "1진"}, {no: "20102", name: "권채원", flight: "1진"}, {no: "20103", name: "김나은", flight: "1진"}, {no: "20104", name: "송윤지", flight: "1진"},
+            {no: "20105", name: "박시랑", flight: "1진"}, {no: "20106", name: "박시온", flight: "1진"}, {no: "20107", name: "서지민", flight: "1진"}, {no: "20108", name: "김하온", flight: "1진"},
+            {no: "20109", name: "양다연", flight: "1진"}, {no: "20110", name: "우은채", flight: "1진"}, {no: "20111", name: "김도현", flight: "1진"}, {no: "20112", name: "김우진", flight: "1진"},
+            {no: "20113", name: "노경민", flight: "2진"}, {no: "20114", name: "박슬빈", flight: "2진"}, {no: "20115", name: "박기성", flight: "2진"}, {no: "20116", name: "안주혁", flight: "2진"},
+            {no: "20117", name: "이정훈", flight: "2진"}, {no: "20118", name: "임한서", flight: "2진"}, {no: "20119", name: "박제민", flight: "2진"}, {no: "20120", name: "오유찬", flight: "2진"},
+            {no: "20121", name: "황보찬", flight: "2진"}, {no: "20122", name: "김현찬", flight: "2진"}, {no: "20123", name: "송현민", flight: "2진"}, {no: "20124", name: "최희준", flight: "2진"}
+          ]
+        },
+        {
+          classId: "c2", jin: "jin1",
+          title: "📁 2반 (2호차 · 2조 · 2학년 부장 & 담임: 박원기 / 인솔: 박세원)",
+          count: "24명 (전원 1진 아시아나)",
+          students: [
+            {no: "20201", name: "김나경"}, {no: "20202", name: "안서영"}, {no: "20203", name: "최은서"}, {no: "20204", name: "최이서"},
+            {no: "20205", name: "노하은"}, {no: "20206", name: "박은서"}, {no: "20207", name: "신채원"}, {no: "20208", name: "최선아"},
+            {no: "20209", name: "복준현"}, {no: "20210", name: "류민현"}, {no: "20211", name: "조은준"}, {no: "20212", name: "공민호"},
+            {no: "20213", name: "박성주"}, {no: "20214", name: "박성현"}, {no: "20215", name: "이영준"}, {no: "20216", name: "정승용"},
+            {no: "20217", name: "박현우"}, {no: "20218", name: "엄태빈"}, {no: "20219", name: "이찬민"}, {no: "20220", name: "김주찬"},
+            {no: "20221", name: "이진헌"}, {no: "20222", name: "임지훈"}, {no: "20223", name: "박세현", isHelp: true}, {no: "20224", name: "강태민"}
+          ]
+        },
+        {
+          classId: "c3", jin: "jin2",
+          title: "📁 3반 (3호차 · 2조 · 담임: 황현수 / 인솔: 서경미 교장)",
+          count: "22명 (전원 2진 대한항공)",
+          students: [
+            {no: "20301", name: "이지한"}, {no: "20302", name: "안성빈"}, {no: "20303", name: "하동엽"}, {no: "20304", name: "최건희"},
+            {no: "20305", name: "장윤성"}, {no: "20306", name: "이지후"}, {no: "20307", name: "김진우"}, {no: "20308", name: "정민재"},
+            {no: "20309", name: "안시후"}, {no: "20310", name: "김산"}, {no: "20311", name: "신영빈"}, {no: "20312", name: "정태영"},
+            {no: "20313", name: "김진엽"}, {no: "20314", name: "구교빈"}, {no: "20315", name: "김명은"}, {no: "20316", name: "이지원"},
+            {no: "20317", name: "황유진"}, {no: "20318", name: "이효정"}, {no: "20319", name: "김민서"}, {no: "20320", name: "이연수"},
+            {no: "20321", name: "최은지"}, {no: "20322", name: "남학생1명"}
+          ]
+        },
+        {
+          classId: "c4", jin: "jin1",
+          title: "📁 4반 (4호차 · 3조 · 담임: 임미영 / 현지가이드 1명)",
+          count: "21명 (전원 1진 아시아나)",
+          students: [
+            {no: "20401", name: "강민하"}, {no: "20402", name: "권종범"}, {no: "20403", name: "김서진"}, {no: "20404", name: "주지훈"},
+            {no: "20405", name: "류동우"}, {no: "20406", name: "서현서"}, {no: "20407", name: "손우성"}, {no: "20408", name: "박현준"},
+            {no: "20409", name: "이재현"}, {no: "20410", name: "허준서"}, {no: "20411", name: "문서진"}, {no: "20412", name: "이준영"},
+            {no: "20413", name: "전용준"}, {no: "20414", name: "김태이"}, {no: "20415", name: "민지윤"}, {no: "20416", name: "이가영"},
+            {no: "20417", name: "이서경"}, {no: "20418", name: "신예은"}, {no: "20419", name: "정인아"}, {no: "20420", name: "이수민"},
+            {no: "20421", name: "한세영"}
+          ]
+        },
+        {
+          classId: "c5", jin: "jin1",
+          title: "📁 5반 (5호차 · 3조 · 담임: 김서진 / 현지가이드 1명)",
+          count: "24명 (전원 1진 아시아나)",
+          students: [
+            {no: "20501", name: "김강민"}, {no: "20502", name: "신주원"}, {no: "20503", name: "안예준"}, {no: "20504", name: "이준호"},
+            {no: "20505", name: "양승목"}, {no: "20506", name: "정재윤"}, {no: "20507", name: "하준형"}, {no: "20508", name: "홍석주"},
+            {no: "20509", name: "김도훈"}, {no: "20510", name: "김현무"}, {no: "20511", name: "위진성"}, {no: "20512", name: "장주원"},
+            {no: "20513", name: "김보은"}, {no: "20514", name: "김예진"}, {no: "20515", name: "김한나"}, {no: "20516", name: "이소윤"},
+            {no: "20517", name: "이지윤"}, {no: "20518", name: "송보민"}, {no: "20519", name: "최영서"}, {no: "20520", name: "조효나"},
+            {no: "20521", name: "백재은"}, {no: "20522", name: "김민서"}, {no: "20523", name: "이수연"}, {no: "20524", name: "김아진"}
+          ]
+        },
+        {
+          classId: "c6", jin: "jin1",
+          title: "📁 6반 (6호차 · 2조 · 담임: 장지은 / 현지가이드 1명)",
+          count: "23명 (전원 1진 아시아나)",
+          students: [
+            {no: "20601", name: "권태민"}, {no: "20602", name: "백승준"}, {no: "20603", name: "손재협"}, {no: "20604", name: "신재영"},
+            {no: "20605", name: "권현상"}, {no: "20606", name: "김정욱"}, {no: "20607", name: "남지현"}, {no: "20608", name: "임예준"},
+            {no: "20609", name: "강한빈"}, {no: "20610", name: "이세벽"}, {no: "20611", name: "표준영"}, {no: "20612", name: "김태민"},
+            {no: "20613", name: "유승연"}, {no: "20614", name: "이동규"}, {no: "20615", name: "김예림"}, {no: "20616", name: "유지현"},
+            {no: "20617", name: "이채정"}, {no: "20618", name: "강라연"}, {no: "20619", name: "김다정"}, {no: "20620", name: "이민혜"},
+            {no: "20621", name: "정서윤"}, {no: "20622", name: "정희윤"}, {no: "20623", name: "황지후"}
+          ]
+        },
+        {
+          classId: "c7", jin: "jin2",
+          title: "📁 7반 (7호차 · 1조 · 담임: 임나래 / 현지가이드 1명)",
+          count: "23명 (전원 2진 대한항공)",
+          students: [
+            {no: "20701", name: "김원우"}, {no: "20702", name: "문준현"}, {no: "20703", name: "장민혁"}, {no: "20704", name: "정서준"},
+            {no: "20705", name: "김현우"}, {no: "20706", name: "이재호"}, {no: "20707", name: "정성우"}, {no: "20708", name: "진민호"},
+            {no: "20709", name: "노화영"}, {no: "20710", name: "브루스새라"}, {no: "20711", name: "손승아"}, {no: "20712", name: "최인성"},
+            {no: "20713", name: "박시영"}, {no: "20714", name: "신희주"}, {no: "20715", name: "윤민희"}, {no: "20716", name: "이주아"},
+            {no: "20717", name: "김가연"}, {no: "20718", name: "김나경"}, {no: "20719", name: "이채은"}, {no: "20720", name: "조보빈"},
+            {no: "20721", name: "송채은"}, {no: "20722", name: "오수연"}, {no: "20723", name: "진아연"}
+          ]
+        },
+        {
+          classId: "c8", jin: "jin2",
+          title: "📁 8반 (8호차 · 1조 · 담임: 윤연미 / 인솔: 김효성)",
+          count: "24명 (전원 2진 대한항공)",
+          students: [
+            {no: "20801", name: "강선우"}, {no: "20802", name: "김윤건"}, {no: "20803", name: "김태윤"}, {no: "20804", name: "임영진"},
+            {no: "20805", name: "배기문"}, {no: "20806", name: "윤찬영"}, {no: "20807", name: "이주헌"}, {no: "20808", name: "한규인"},
+            {no: "20809", name: "김정찬"}, {no: "20810", name: "김진성"}, {no: "20811", name: "송현호"}, {no: "20812", name: "주민상"},
+            {no: "20813", name: "강태민"}, {no: "20814", name: "고도영"}, {no: "20815", name: "이정우"}, {no: "20816", name: "김동훈"},
+            {no: "20817", name: "김명성"}, {no: "20818", name: "이현우"}, {no: "20819", name: "김예나"}, {no: "20820", name: "김예희"},
+            {no: "20821", name: "이가영"}, {no: "20822", name: "이나영"}, {no: "20823", name: "엄채영"}, {no: "20824", name: "장지윤"}
+          ]
+        },
+        {
+          classId: "c9", jin: "jin2",
+          title: "📁 9반 (9호차 · 3조 · 담임: 구민정 / 인솔: 이은주)",
+          count: "20명 (전원 2진 대한항공)",
+          students: [
+            {no: "20901", name: "전석찬"}, {no: "20902", name: "김유신"}, {no: "20903", name: "육형권"}, {no: "20904", name: "김두현"},
+            {no: "20905", name: "배민준"}, {no: "20906", name: "이태랑"}, {no: "20907", name: "이승후"}, {no: "20908", name: "정재현"},
+            {no: "20909", name: "전준서"}, {no: "20910", name: "이지환"}, {no: "20911", name: "박진성"}, {no: "20912", name: "박경호"},
+            {no: "20913", name: "이준우"}, {no: "20914", name: "이승준"}, {no: "20915", name: "김하은"}, {no: "20916", name: "김하윤"},
+            {no: "20917", name: "우효정"}, {no: "20918", name: "김가영"}, {no: "20919", name: "김가현"}, {no: "20920", name: "한수린"}
+          ]
+        }
+      ],
+      teachersList: [
+        {name: "서경미 교장선생님", role: "학교장 · 총괄", bus: "2조 3호차"},
+        {name: "박원기 선생님", role: "2학년 부장 · 2반 담임", bus: "2조 2호차"},
+        {name: "명석현 선생님", role: "1반 담임", bus: "1조 1호차"},
+        {name: "황현수 선생님", role: "3반 담임", bus: "2조 3호차"},
+        {name: "임미영 선생님", role: "4반 담임", bus: "3조 4호차"},
+        {name: "김서진 선생님", role: "5반 담임", bus: "3조 5호차"},
+        {name: "장지은 선생님", role: "6반 담임", bus: "2조 6호차"},
+        {name: "임나래 선생님", role: "7반 담임", bus: "1조 7호차"},
+        {name: "윤연미 선생님", role: "8반 담임", bus: "1조 8호차"},
+        {name: "구민정 선생님", role: "9반 담임", bus: "3조 9호차"},
+        {name: "박세원 선생님", role: "도움반 지도교사", bus: "2조 2호차"},
+        {name: "장희승 선생님", role: "인솔 교사", bus: "1조 1호차"},
+        {name: "김효성 선생님", role: "인솔 교사", bus: "1조 8호차"},
+        {name: "이은주 선생님", role: "인솔 교사", bus: "3조 9호차"}
+      ],
+      contactGroups: [
+        {
+          groupTitle: "🎯 총괄",
+          headerCls: "slate",
+          members: [
+            {name: "서경미", star: false, role: "학교장 · 전체 총괄", isFemale: true, isStar: false},
+            {name: "박원기", star: true, role: "2학년부장 · 1·2진 총괄 대표 · 2반 담임", isFemale: false, isStar: true},
+            {name: "장희승", star: true, role: "학생 부장 · 본부 지원", isFemale: false, isStar: false}
+          ]
+        },
+        {
+          groupTitle: "✈️ 1진 인솔교사 (9/15 09:30 OZ8123 아시아나)",
+          headerCls: "",
+          members: [
+            {name: "명석현", star: false, role: "1반 담임 · 1진 인솔", isFemale: false, isStar: false},
+            {name: "박원기", star: true, role: "2반 담임 · 1진 대표 인솔", isFemale: false, isStar: true},
+            {name: "임미영", star: false, role: "4반 담임", isFemale: true, isStar: false},
+            {name: "김서진", star: false, role: "5반 담임", isFemale: true, isStar: false},
+            {name: "장지은", star: false, role: "6반 담임", isFemale: true, isStar: false},
+            {name: "박세원", star: false, role: "도움반 담임", isFemale: false, isStar: false}
+          ]
+        },
+        {
+          groupTitle: "✈️ 2진 인솔교사 (9/15 11:05 KE1569 대한항공)",
+          headerCls: "green",
+          members: [
+            {name: "황현수", star: true, role: "3반 담임 · 2진 대표 인솔", isFemale: false, isStar: true},
+            {name: "임나래", star: false, role: "7반 담임", isFemale: true, isStar: false},
+            {name: "윤연미", star: false, role: "8반 담임", isFemale: true, isStar: false},
+            {name: "구민정", star: false, role: "9반 담임", isFemale: true, isStar: false},
+            {name: "김효성", star: false, role: "8호차 부담임", isFemale: false, isStar: false},
+            {name: "이은주", star: false, role: "9호차 부담임", isFemale: true, isStar: false}
+          ]
+        }
+      ],
+      roomsData: [
+        {team: "teachers", classTitle: "교직원 인솔실", room: "601호", members: ["서경미(학교장)"], isTeacher: true},
+        {team: "teachers", classTitle: "교직원 인솔실", room: "218호", members: ["구민정", "김서진"], isTeacher: true},
+        {team: "teachers", classTitle: "교직원 인솔실", room: "227호", members: ["장지은", "윤연미"], isTeacher: true},
+        {team: "teachers", classTitle: "교직원 인솔실", room: "310호", members: ["임미영", "이은주"], isTeacher: true},
+        {team: "teachers", classTitle: "교직원 인솔실", room: "501호", members: ["임나래"], isTeacher: true},
+        {team: "teachers", classTitle: "교직원 인솔실", room: "311호", members: ["장희승"], isTeacher: true},
+        {team: "teachers", classTitle: "교직원 인솔실", room: "336호", members: ["박원기(부장)", "황현수"], isTeacher: true},
+        {team: "teachers", classTitle: "교직원 인솔실", room: "517호", members: ["명석현", "김효성"], isTeacher: true},
+        {team: "teachers", classTitle: "교직원 인솔실", room: "327호", members: ["박세원(지도교사)", "이지원(도움)", "여용민(도움)"], isTeacher: true},
+
+        {team: "team1", classTitle: "1반 (여학생)", room: "210호", members: ["강민주", "권채원", "김나은", "송윤지"]},
+        {team: "team1", classTitle: "1반 (여학생)", room: "211호", members: ["박시랑", "박시온", "서지민"]},
+        {team: "team1", classTitle: "1반 (여학생)", room: "212호", members: ["김하온", "양다연", "우은채"]},
+        {team: "team1", classTitle: "1반 (남학생)", room: "321호", members: ["김도현", "김우진", "노경민", "박슬빈"]},
+        {team: "team1", classTitle: "1반 (남학생)", room: "322호", members: ["박기성", "안주혁", "이정훈", "임한서"]},
+        {team: "team1", classTitle: "1반 (남학생)", room: "323호", members: ["박제민", "오유찬", "황보찬"]},
+        {team: "team1", classTitle: "1반 (남학생)", room: "325호", members: ["김현찬", "송현민", "최희준"]},
+
+        {team: "team1", classTitle: "7반 (여학생)", room: "202호", members: ["노화영", "브루스새라", "손승아", "최인성"]},
+        {team: "team1", classTitle: "7반 (여학생)", room: "203호", members: ["박시영", "신희주", "윤민희", "이주아"]},
+        {team: "team1", classTitle: "7반 (여학생)", room: "205호", members: ["김가연", "김나경", "이채은", "조보빈"]},
+        {team: "team1", classTitle: "7반 (여학생)", room: "206호", members: ["송채은", "오수연", "진아연"]},
+        {team: "team1", classTitle: "7반 (남학생)", room: "342호", members: ["김원우", "문준현", "장민혁", "정서준"]},
+        {team: "team1", classTitle: "7반 (남학생)", room: "343호", members: ["김현우", "이재호", "정성우", "진민호"]},
+
+        {team: "team1", classTitle: "8반 (여학생)", room: "305호", members: ["김예나", "김예희", "이가영", "이나영"]},
+        {team: "team1", classTitle: "8반 (여학생)", room: "306호", members: ["엄채영", "장지윤"]},
+        {team: "team1", classTitle: "8반 (남학생)", room: "511호", members: ["강선우", "김윤건", "김태윤", "임영진"]},
+        {team: "team1", classTitle: "8반 (남학생)", room: "512호", members: ["배기문", "윤찬영", "이주헌", "한규인"]},
+        {team: "team1", classTitle: "8반 (남학생)", room: "513호", members: ["김정찬", "김진성", "송현호", "주민상"]},
+        {team: "team1", classTitle: "8반 (남학생)", room: "515호", members: ["강태민", "고도영", "이정우"]},
+        {team: "team1", classTitle: "8반 (남학생)", room: "516호", members: ["김동훈", "김명성", "이현우"]},
+
+        {team: "team2", classTitle: "2반 (여학생)", room: "213호", members: ["김나경", "안서영", "최은서", "최이서"]},
+        {team: "team2", classTitle: "2반 (여학생)", room: "215호", members: ["노하은", "박은서", "신채원", "최선아"]},
+        {team: "team2", classTitle: "2반 (남학생)", room: "328호", members: ["복준현", "류민현", "조은준", "공민호"]},
+        {team: "team2", classTitle: "2반 (남학생)", room: "329호", members: ["박성주", "박성현", "이영준", "정승용"]},
+        {team: "team2", classTitle: "2반 (남학생)", room: "330호", members: ["박현우", "엄태빈", "이찬민"]},
+        {team: "team2", classTitle: "2반 (남학생)", room: "331호", members: ["김주찬", "이진헌", "임지훈", "박세현(도움)"]},
+
+        {team: "team2", classTitle: "3반 (여학생)", room: "216호", members: ["이지원", "황유진", "이효정", "김민서"]},
+        {team: "team2", classTitle: "3반 (여학생)", room: "217호", members: ["이연수", "최은지"]},
+        {team: "team2", classTitle: "3반 (남학생)", room: "332호", members: ["이지한", "안성빈", "하동엽"]},
+        {team: "team2", classTitle: "3반 (남학생)", room: "333호", members: ["최건희", "장윤성", "이지후", "김진우"]},
+        {team: "team2", classTitle: "3반 (남학생)", room: "335호", members: ["정민재", "안시후", "김산", "신영빈"]},
+        {team: "team2", classTitle: "3반 (남학생)", room: "337호", members: ["정태영", "김진엽", "구교빈", "김명은"]},
+
+        {team: "team2", classTitle: "6반 (여학생)", room: "301호", members: ["김예림", "유지현", "이채정"]},
+        {team: "team2", classTitle: "6반 (여학생)", room: "302호", members: ["강라연", "김다정", "이민혜"]},
+        {team: "team2", classTitle: "6반 (여학생)", room: "303호", members: ["정서윤", "정희윤", "황지후"]},
+        {team: "team2", classTitle: "6반 (남학생)", room: "316호", members: ["권태민", "백승준", "손재협", "신재영"]},
+        {team: "team2", classTitle: "6반 (남학생)", room: "317호", members: ["권현상", "김정욱", "남지현", "임예준"]},
+        {team: "team2", classTitle: "6반 (남학생)", room: "319호", members: ["강한빈", "이세벽", "표준영"]},
+        {team: "team2", classTitle: "6반 (남학생)", room: "320호", members: ["김태민", "유승연", "이동규"]},
+
+        {team: "team3", classTitle: "4반 (여학생)", room: "220호", members: ["김태이", "민지윤", "이가영", "이서경"]},
+        {team: "team3", classTitle: "4반 (여학생)", room: "221호", members: ["신예은", "정인아", "이수민", "한세영"]},
+        {team: "team3", classTitle: "4반 (남학생)", room: "338호", members: ["강민하", "권종범", "김서진", "주지훈"]},
+        {team: "team3", classTitle: "4반 (남학생)", room: "339호", members: ["류동우", "서현서", "손우성"]},
+        {team: "team3", classTitle: "4반 (남학생)", room: "340호", members: ["박현준", "이재현", "허준서"]},
+        {team: "team3", classTitle: "4반 (남학생)", room: "341호", members: ["문서진", "이준영", "전용준"]},
+
+        {team: "team3", classTitle: "5반 (여학생)", room: "222호", members: ["김보은", "김예진", "김한나", "이소윤"]},
+        {team: "team3", classTitle: "5반 (여학생)", room: "223호", members: ["이지윤", "송보민", "최영서", "조효나"]},
+        {team: "team3", classTitle: "5반 (여학생)", room: "225호", members: ["백재은", "김민서", "이수연", "김아진"]},
+        {team: "team3", classTitle: "5반 (남학생)", room: "312호", members: ["김강민", "신주원", "안예준", "이준호"]},
+        {team: "team3", classTitle: "5반 (남학생)", room: "313호", members: ["양승목", "정재윤", "하준형", "홍석주"]},
+        {team: "team3", classTitle: "5반 (남학생)", room: "315호", members: ["김도훈", "김현무", "위진성", "장주원"]},
+
+        {team: "team3", classTitle: "9반 (여학생)", room: "207호", members: ["김하은", "김하윤", "우효정"]},
+        {team: "team3", classTitle: "9반 (여학생)", room: "208호", members: ["김가영", "김가현", "한수린"]},
+        {team: "team3", classTitle: "9반 (남학생)", room: "502호", members: ["전석찬", "김유신"]},
+        {team: "team3", classTitle: "9반 (남학생)", room: "503호", members: ["육형권", "김두현"]},
+        {team: "team3", classTitle: "9반 (남학생)", room: "505호", members: ["배민준", "이태랑"]},
+        {team: "team3", classTitle: "9반 (남학생)", room: "506호", members: ["이승후", "정재현"]},
+        {team: "team3", classTitle: "9반 (남학생)", room: "507호", members: ["전준서", "이지환"]},
+        {team: "team3", classTitle: "9반 (남학생)", room: "510호", members: ["박진성", "박경호", "이준우", "이승준"]}
+      ],
+      scheduleData: {
+        d1: {
+          teams: [
+            {
+              id: "d1_a", name: "아시아나팀 (1·2·4·5·6반)", badge: "중식: 이레한정식 / 석식: 숙소식",
+              items: [
+                {time: "07:00", icon: "🏫", text: "상모고 집결 및 대구공항으로 출발 (전세버스 7대)"},
+                {time: "09:30", icon: "✈️", text: "대구공항 출발 (OZ8123 편)"},
+                {time: "10:35", icon: "🛬", text: "제주공항 도착 및 수하물 수령"},
+                {time: "11:30", icon: "🍱", text: "중식 (이레한정식)"},
+                {time: "12:30", icon: "🌊", text: "이호테우 해변 탐방 (빨간말 등대 산책)"},
+                {time: "14:20", icon: "🏖️", text: "대한항공팀과 합류 및 함덕해수욕장 관광"},
+                {time: "15:00", icon: "🚌", text: "성산 아쿠아플라넷 제주로 이동"},
+                {time: "15:50", icon: "🐬", text: "아쿠아플라넷 제주 관람 (16:00 해녀물질시연 / 16:20 오션아레나 공연)"},
+                {time: "18:00", icon: "🚌", text: "숙소 이동"},
+                {time: "18:15", icon: "🏨", text: "더 포그레이스 리조트 도착, 석식 및 객실 점호"}
+              ]
+            },
+            {
+              id: "d1_b", name: "대한항공팀 (1·3·7·8·9반)", badge: "중식: 이레한정식 / 석식: 숙소식",
+              items: [
+                {time: "08:30", icon: "🏫", text: "상모고 집결 및 대구공항으로 출발"},
+                {time: "11:05", icon: "✈️", text: "대구공항 출발 (KE1569 편)"},
+                {time: "12:10", icon: "🛬", text: "제주공항 도착 및 수하물 수령"},
+                {time: "12:50", icon: "🍱", text: "중식 (이레한정식)"},
+                {time: "14:20", icon: "🏖️", text: "아시아나팀과 합류 및 함덕해수욕장 관광"},
+                {time: "15:00", icon: "🚌", text: "성산 아쿠아플라넷 제주로 이동"},
+                {time: "15:50", icon: "🐬", text: "아쿠아플라넷 제주 관람 (16:00 해녀물질시연 / 16:20 오션아레나 공연)"},
+                {time: "18:00", icon: "🚌", text: "숙소 이동"},
+                {time: "18:15", icon: "🏨", text: "더 포그레이스 리조트 도착, 석식 및 객실 점호"}
+              ]
+            }
+          ]
+        },
+        d2: {
+          teams: [
+            {
+              id: "d2_1", name: "1조 (1·7·8반)", badge: "중식: 제주 면공장 / 조·석식: 숙소식",
+              items: [
+                {time: "08:00", icon: "🚌", text: "조식 후 숙소 출발"},
+                {time: "09:20", icon: "🦙", text: "도치돌 알파카 목장 체험 (~10:30)"},
+                {time: "10:40", icon: "🎨", text: "아르떼 뮤지엄 관람 (~12:00)"},
+                {time: "12:00", icon: "🍜", text: "중식 (제주 면공장, ~12:50)"},
+                {time: "13:00", icon: "🏎️", text: "9.81 파크 체험 (풀패키지 이용, ~17:00)"},
+                {time: "17:00", icon: "🚌", text: "숙소 이동"},
+                {time: "18:20", icon: "🏨", text: "숙소 도착 및 석식, 휴식"}
+              ]
+            },
+            {
+              id: "d2_2", name: "2조 (2·3·6반)", badge: "중식: 올레시장 개별 자유식 / 조·석식: 숙소식",
+              items: [
+                {time: "08:30", icon: "🚌", text: "조식 후 숙소 출발"},
+                {time: "09:40", icon: "🌊", text: "정방폭포 관람 (~10:40)"},
+                {time: "11:00", icon: "🛍️", text: "서귀포 매일올레시장 탐방 및 중식(개별 자유식, ~13:00)"},
+                {time: "14:20", icon: "🚲", text: "제주 레일바이크 체험 (4인승 탑승, ~15:40)"},
+                {time: "16:10", icon: "🌿", text: "세계자연유산센터 관람 (입장마감 시간 엄수, ~17:20)"},
+                {time: "17:20", icon: "🚌", text: "숙소 이동"},
+                {time: "18:10", icon: "🏨", text: "숙소 도착 및 석식, 휴식"}
+              ]
+            },
+            {
+              id: "d2_3", name: "3조 (4·5·9반)", badge: "중식: 올레시장 개별 자유식 / 조·석식: 숙소식",
+              items: [
+                {time: "08:20", icon: "🚌", text: "조식 후 숙소 출발"},
+                {time: "09:00", icon: "🌿", text: "세계자연유산센터 관람 (~10:20)"},
+                {time: "10:50", icon: "🚲", text: "제주 레일바이크 체험 (~12:00)"},
+                {time: "13:10", icon: "🛍️", text: "서귀포 매일올레시장 탐방 및 중식(개별 자유식, ~15:10)"},
+                {time: "15:30", icon: "🌊", text: "정방폭포 관람 (~16:30)"},
+                {time: "16:30", icon: "🚗", text: "해안도로 드라이브 및 휴식 (~17:40)"},
+                {time: "17:40", icon: "🏨", text: "숙소 도착 및 석식, 휴식"}
+              ]
+            }
+          ]
+        },
+        d3: {
+          teams: [
+            {
+              id: "d3_1", name: "1조 (1·7·8반)", badge: "중식: 올레시장 개별 자유식 / 석식: 숙소식",
+              items: [
+                {time: "08:20", icon: "🚌", text: "조식 후 숙소 출발"},
+                {time: "09:00", icon: "🌿", text: "세계자연유산센터 관람 (~10:20)"},
+                {time: "10:50", icon: "🚲", text: "제주 레일바이크 체험 (~12:00)"},
+                {time: "13:10", icon: "🛍️", text: "서귀포 올레시장 탐방 및 중식(개별 자유식, ~15:10)"},
+                {time: "15:30", icon: "🌊", text: "정방폭포 관람 (~16:30)"},
+                {time: "16:30", icon: "🚗", text: "해안도로 드라이브 및 휴식 (~17:40)"},
+                {time: "17:40", icon: "🏨", text: "숙소 도착 및 석식 (~18:40)"},
+                {time: "20:30", icon: "🎉", text: "전교생 레크레이션 행사 (세미나실, ~22:00)"}
+              ]
+            },
+            {
+              id: "d3_2", name: "2조 (2·3·6반)", badge: "중식: 제주 면공장 / 석식: 숙소식",
+              items: [
+                {time: "08:00", icon: "🚌", text: "조식 후 숙소 출발"},
+                {time: "09:30", icon: "🦙", text: "도치돌 알파카 목장 체험 (~10:20)"},
+                {time: "10:40", icon: "🎨", text: "아르떼 뮤지엄 관람 (~11:30)"},
+                {time: "11:30", icon: "🍜", text: "중식 (제주 면공장, ~12:10)"},
+                {time: "12:30", icon: "🏎️", text: "9.81 파크 체험 (풀패키지 이용, ~17:00)"},
+                {time: "18:40", icon: "🏨", text: "숙소 도착 및 석식 (~19:40)"},
+                {time: "20:30", icon: "🎉", text: "전교생 레크레이션 행사 (세미나실, ~22:00)"}
+              ]
+            },
+            {
+              id: "d3_3", name: "3조 (4·5·9반)", badge: "중식: 제주 면공장 / 석식: 숙소식",
+              items: [
+                {time: "08:30", icon: "🚌", text: "조식 후 숙소 출발"},
+                {time: "10:00", icon: "🦙", text: "도치돌 알파카 목장 체험 (~10:50)"},
+                {time: "11:10", icon: "🎨", text: "아르떼 뮤지엄 관람 (~11:50)"},
+                {time: "11:50", icon: "🍜", text: "중식 (제주 면공장, ~12:50)"},
+                {time: "13:00", icon: "🏎️", text: "9.81 파크 체험 (풀패키지 이용, ~17:00)"},
+                {time: "18:20", icon: "🏨", text: "숙소 도착 및 석식 (~19:20)"},
+                {time: "20:30", icon: "🎉", text: "전교생 레크레이션 행사 (세미나실, ~22:00)"}
+              ]
+            }
+          ]
+        },
+        d4: {
+          teams: [
+            {
+              id: "d4_k", name: "대한항공팀 (1·3·7·8·9반)", badge: "중식: 제주 밀라네사 뷔페",
+              items: [
+                {time: "08:00", icon: "🍳", text: "조식 및 짐 정리, 호텔 체크아웃 (~09:20)"},
+                {time: "10:10", icon: "🕊️", text: "제주 4·3 평화기념관 관람 (~11:30)"},
+                {time: "12:00", icon: "🍽️", text: "중식 (제주 밀라네사 뷔페, ~13:10)"},
+                {time: "13:50", icon: "🏢", text: "제주공항 도착 및 탑승 수속, 면세점 이용"},
+                {time: "16:35", icon: "🛫", text: "제주공항 출발 (KE1576 편)"},
+                {time: "17:40", icon: "🛬", text: "대구공항 도착 및 수하물 수령 (~18:20)"},
+                {time: "18:30", icon: "🚌", text: "대구공항에서 학교로 출발"},
+                {time: "19:30", icon: "🏫", text: "상모고등학교 도착 및 해산"}
+              ]
+            },
+            {
+              id: "d4_a", name: "아시아나팀 (1·2·4·5·6반)", badge: "중식: 제주 밀라네사 뷔페",
+              items: [
+                {time: "08:30", icon: "🍳", text: "조식 및 짐 정리, 호텔 체크아웃 (~10:00)"},
+                {time: "10:50", icon: "🕊️", text: "제주 4·3 평화기념관 관람 (~12:20)"},
+                {time: "13:00", icon: "🍽️", text: "중식 (제주 밀라네사 뷔페, ~14:10)"},
+                {time: "14:50", icon: "🏢", text: "제주공항 도착 및 탑승 수속, 면세점 이용"},
+                {time: "17:25", icon: "🛫", text: "제주공항 출발 (OZ8126 편)"},
+                {time: "18:30", icon: "🛬", text: "대구공항 도착 및 수하물 수령 (~19:10)"},
+                {time: "19:20", icon: "🚌", text: "대구공항에서 학교로 출발"},
+                {time: "20:20", icon: "🏫", text: "상모고등학교 도착 및 해산"}
+              ]
+            }
+          ]
+        }
+      }
+    };
+
+    let currentBusMode = 'school';
+
+    // 버스 모드(학교<->공항 vs 제주현지) 전환 핸들러
+    function selectBusMode(mode) {
+      currentBusMode = mode;
+      document.getElementById('btn-bus-school').classList.toggle('active', mode === 'school');
+      document.getElementById('btn-bus-jeju').classList.toggle('active', mode === 'jeju');
+
+      const notice = document.getElementById('bus-notice-banner');
+      if (mode === 'school') {
+        notice.textContent = "🚌 1일차 학교 ➔ 대구공항 및 4일차 귀향 시 전세버스 7대(45인승) 배정 현황입니다.";
+      } else {
+        notice.textContent = "🌴 2·3일차 제주 현지 전세버스 9대(45인승) 및 조별 순환 탑승 현황입니다.";
+      }
+
+      renderBusCards();
+    }
+
+    // 버스 카드 렌더링 (경산고 스타일 일치)
+    function renderBusCards() {
+      const container = document.getElementById('bus-cards-container');
+      const list = APP_DATA.busData[currentBusMode];
+      let html = '';
+
+      list.forEach(b => {
+        html += `
+          <div class="bus-card">
+            <div class="bus-card-top">
+              <div>
+                <span class="bus-id-badge">${b.id}</span>
+                <span class="bus-title-text">${b.title}</span>
+                <div class="bus-count-info" style="margin-left: 36px; margin-top: 2px;">${b.countInfo}</div>
+              </div>
+              <span class="bus-team-tag">${b.teamTag}</span>
+            </div>
+            <div class="bus-card-teacher">
+              <span>인솔교사:</span>
+              ${b.teachers.map(t => `<span class="teacher-pill">👨‍🏫 ${t}</span>`).join('')}
+            </div>
+            <div class="bus-card-students">
+              ${b.students.map(s => `<span class="bus-st-pill">${s}</span>`).join('')}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    let currentScheduleDay = 'd1';
+    let currentRoomGroup = 'all';
+    let currentRoomSearch = '';
+
+    function renderRooms() {
+      const container = document.getElementById('rooms-view-container');
+      let filtered = APP_DATA.roomsData;
+
+      if (currentRoomGroup !== 'all') {
+        filtered = filtered.filter(r => r.team === currentRoomGroup);
+      }
+
+      if (currentRoomSearch.trim() !== '') {
+        const query = currentRoomSearch.trim().toLowerCase();
+        filtered = filtered.filter(r => {
+          const matchRoom = r.room.toLowerCase().includes(query);
+          const matchMember = r.members.some(m => m.toLowerCase().includes(query));
+          const matchClass = r.classTitle.toLowerCase().includes(query);
+          return matchRoom || matchMember || matchClass;
+        });
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="card" style="padding: 30px; text-align: center; color: var(--text-muted);">
+            검색 결과가 없습니다. 학생 이름이나 호실 번호를 다시 확인해 주세요.
+          </div>
+        `;
+        return;
+      }
+
+      const groupMap = new Map();
+      filtered.forEach(item => {
+        if (!groupMap.has(item.classTitle)) {
+          groupMap.set(item.classTitle, []);
+        }
+        groupMap.get(item.classTitle).push(item);
+      });
+
+      let html = '';
+      groupMap.forEach((roomList, classTitle) => {
+        const totalCount = roomList.reduce((acc, r) => acc + r.members.length, 0);
+        html += `
+          <div class="card">
+            <div class="card-header ${classTitle.includes('교직원') ? 'slate' : ''}">
+              <span>📁 ${classTitle}</span>
+              <span class="badge-count">${roomList.length}실 · ${totalCount}명</span>
+            </div>
+            <div class="room-card-grid">
+        `;
+        roomList.forEach(r => {
+          html += `
+            <div class="room-card-item">
+              <div class="room-card-header ${r.isTeacher ? 'header-teacher' : ''}">
+                ${r.room}
+              </div>
+              <div class="room-card-body">
+          `;
+          r.members.forEach((m, idx) => {
+            html += `
+              <div class="room-member">
+                ${idx === 0 && !r.isTeacher ? '<span class="leader-crown">👑</span>' : ''}
+                <span>${m}</span>
+              </div>
+            `;
+          });
+          html += `</div></div>`;
+        });
+        html += `</div></div>`;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function filterRoomGroup(group) {
+      currentRoomGroup = group;
+      document.querySelectorAll('#room-filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = Array.from(document.querySelectorAll('#room-filter-bar .filter-btn')).find(btn => 
+        btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(group)
+      );
+      if(activeBtn) activeBtn.classList.add('active');
+      renderRooms();
+    }
+
+    function handleRoomSearch(val) {
+      currentRoomSearch = val;
+      renderRooms();
+    }
+
+    function selectScheduleDay(dayId, btnElem) {
+      currentScheduleDay = dayId;
+      document.querySelectorAll('.day-square-btn').forEach(b => b.classList.remove('active'));
+      if(btnElem) btnElem.classList.add('active');
+
+      renderTeamTabs();
+    }
+
+    function renderTeamTabs() {
+      const teamBar = document.getElementById('team-tab-bar');
+      const teams = APP_DATA.scheduleData[currentScheduleDay].teams;
+      let html = '';
+
+      teams.forEach((t, idx) => {
+        html += `
+          <button class="team-tab-btn ${idx === 0 ? 'active' : ''}" onclick="selectTeamSchedule('${t.id}', this)">
+            ${t.name}
+          </button>
+        `;
+      });
+      teamBar.innerHTML = html;
+
+      if(teams.length > 0) {
+        showTeamTimeline(teams[0]);
+      }
+    }
+
+    function selectTeamSchedule(teamId, btnElem) {
+      document.querySelectorAll('.team-tab-btn').forEach(b => b.classList.remove('active'));
+      if(btnElem) btnElem.classList.add('active');
+
+      const teams = APP_DATA.scheduleData[currentScheduleDay].teams;
+      const targetTeam = teams.find(t => t.id === teamId);
+      if(targetTeam) {
+        showTeamTimeline(targetTeam);
+      }
+    }
+
+    function showTeamTimeline(teamObj) {
+      document.getElementById('sch-header-title').textContent = teamObj.name + " 일정";
+      document.getElementById('sch-header-badge').textContent = teamObj.badge;
+
+      const cont = document.getElementById('sch-timeline-content');
+      let html = '';
+      teamObj.items.forEach(item => {
+        html += `
+          <div class="tl-clean-row">
+            <div class="tl-clean-time">${item.time}</div>
+            <div class="tl-clean-bullet"></div>
+            <div class="tl-clean-text">
+              <span>${item.icon}</span>
+              <span>${item.text}</span>
+            </div>
+          </div>
+        `;
+      });
+      cont.innerHTML = html;
+    }
+
+    function renderStudents(filter) {
+      const sCont = document.getElementById('students-container');
+      let sHtml = '';
+
+      if (filter === 'teachers') {
+        sHtml += `
+          <div class="card">
+            <div class="card-header slate">
+              <span>📑 인솔 교직원 명단</span>
+              <span class="badge-count">14명</span>
+            </div>
+            <div class="table-container">
+              <table class="data-table">
+                <thead><tr><th>성명</th><th>역할 및 직무</th><th>탑승 차량</th></tr></thead>
+                <tbody>
+        `;
+        APP_DATA.teachersList.forEach(t => {
+          sHtml += `<tr><td><b>${t.name}</b></td><td>${t.role}</td><td>${t.bus}</td></tr>`;
+        });
+        sHtml += `</tbody></table></div></div>`;
+      } else {
+        let classesToRender = [];
+        if (filter === 'all') {
+          classesToRender = APP_DATA.allClasses;
+        } else if (filter === 'jin1') {
+          classesToRender = APP_DATA.allClasses.filter(c => c.jin === 'jin1' || c.jin === 'jin1_2');
+        } else if (filter === 'jin2') {
+          classesToRender = APP_DATA.allClasses.filter(c => c.jin === 'jin2' || c.jin === 'jin1_2');
+        }
+
+        classesToRender.forEach(c => {
+          let filteredStudents = c.students;
+          if (c.classId === 'c1') {
+            if (filter === 'jin1') filteredStudents = c.students.filter(s => s.flight === '1진');
+            if (filter === 'jin2') filteredStudents = c.students.filter(s => s.flight === '2진');
+          }
+
+          sHtml += `
+            <div class="card">
+              <div class="card-header">
+                <span>${c.title}</span>
+                <span class="badge-count">${filteredStudents.length}명</span>
+              </div>
+              <div class="student-grid">
+          `;
+          filteredStudents.forEach(st => {
+            sHtml += `
+              <div class="student-cell">
+                <span class="student-no">${st.no}</span>
+                <span class="student-name">
+                  ${st.name}
+                  ${st.isHelp ? '<span class="tag-help">도움</span>' : ''}
+                  ${st.flight ? `<span class="tag-flight ${st.flight === '1진' ? 'tag-a' : 'tag-k'}">${st.flight}</span>` : ''}
+                </span>
+              </div>
+            `;
+          });
+          sHtml += `</div></div>`;
+        });
+      }
+      sCont.innerHTML = sHtml;
+    }
+
+    function filterStudentView(filterType) {
+      document.querySelectorAll('#student-filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = Array.from(document.querySelectorAll('#student-filter-bar .filter-btn')).find(btn => 
+        btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(filterType)
+      );
+      if(activeBtn) activeBtn.classList.add('active');
+      renderStudents(filterType);
+    }
+
+    function renderContacts() {
+      const cCont = document.getElementById('contacts-container');
+      let cHtml = '';
+
+      APP_DATA.contactGroups.forEach(cg => {
+        cHtml += `
+          <div class="card">
+            <div class="card-header ${cg.headerCls}">
+              <span>${cg.groupTitle}</span>
+              <span class="badge-count">${cg.members.length}명</span>
+            </div>
+        `;
+        cg.members.forEach(m => {
+          let icon = '👨‍🏫';
+          let avatarCls = '';
+          if (m.isFemale) {
+            icon = '👩‍🏫';
+            avatarCls = 'avatar-female';
+          }
+          if (m.isStar) {
+            icon = '⭐';
+            avatarCls = 'avatar-star';
+          }
+
+          cHtml += `
+            <div class="contact-item">
+              <div class="contact-left">
+                <div class="contact-avatar ${avatarCls}">${icon}</div>
+                <div>
+                  <div class="contact-name">
+                    ${m.name} ${m.star ? '<span class="star-badge">⭐</span>' : ''}
+                  </div>
+                  <div class="contact-role">${m.role}</div>
+                </div>
+              </div>
+              <a href="tel:010-0000-0000" class="call-btn">📞 전화</a>
+            </div>
+          `;
+        });
+        cHtml += `</div>`;
+      });
+
+      cCont.innerHTML = cHtml;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('header-desc').textContent = APP_DATA.headerDesc;
+      document.getElementById('help-student-banner').textContent = APP_DATA.helpBanner;
+
+      renderBusCards();
+      renderRooms();
+      renderTeamTabs();
+      renderStudents('all');
+      renderContacts();
+    });
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+      const target = document.getElementById(tabId);
+      if(target) target.classList.add('active');
+
+      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => 
+        btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(tabId)
+      );
+      if(activeBtn) activeBtn.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showFloorMap(floorId) {
+      const floors = ['f1', 'f2', 'f3', 'f5', 'f6'];
+      const floorTitles = {
+        'f1': '1F 안내도 : 로비, 레스토랑, 세미나룸, 편의점',
+        'f2': '2F 객실배치도 : 여학생 및 인솔실 (201~227호)',
+        'f3': '3F 객실배치도 : 남학생 및 인솔실 (301~343호)',
+        'f5': '5F 객실배치도 : 남학생 및 인솔실 (501~517호)',
+        'f6': '6F 객실배치도 : 학교장 본부실 (601호)'
+      };
+
+      floors.forEach(f => {
+        const targetMap = document.getElementById('map-' + f);
+        if (targetMap) targetMap.style.display = (f === floorId) ? 'block' : 'none';
+      });
+
+      const header = document.getElementById('floor-header');
+      if (header && floorTitles[floorId]) {
+        header.innerHTML = `<span>${floorTitles[floorId]}</span>`;
+      }
+
+      const buttons = document.querySelectorAll('#tab-lodging .filter-btn');
+      buttons.forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('onclick').includes(floorId));
+      });
+    }
+  </script>
+</body>
+</html>
