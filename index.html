@@ -79,7 +79,7 @@
       background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 10px; font-size: 11px;
     }
 
-    /* 버스 탭 전용 가로 2분할 탭 (경산고 스타일 일치) */
+    /* 버스 탭 전용 가로 2분할 탭 */
     .bus-mode-tab-bar {
       display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;
     }
@@ -94,7 +94,7 @@
     }
     .bus-mode-btn.active .mode-title, .bus-mode-btn.active .mode-sub { color: #fff; }
 
-    /* 버스 카드 상세 레이아웃 (경산고 스타일 일치) */
+    /* 버스 카드 상세 */
     .bus-card {
       background: #fff; border: 1px solid var(--card-border); border-radius: 10px;
       margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); overflow: hidden;
@@ -192,6 +192,17 @@
     table.data-table td { padding: 9px 14px; border-bottom: 1px solid #f1f5f9; }
     table.data-table tr:hover { background: #f8fafc; }
 
+    /* 야간순찰 전용 타임라인 테이블 */
+    table.patrol-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: center; }
+    table.patrol-table th { background: #004b87; color: #fff; padding: 10px 12px; border: 1px solid #003865; font-size: 13px; }
+    table.patrol-table td { padding: 10px 8px; border: 1px solid #e2e8f0; font-size: 13px; }
+    .p-time-1 { color: #ea580c; font-weight: 800; }
+    .p-time-2 { color: #0284c7; font-weight: 800; }
+    .p-time-3 { color: #16a34a; font-weight: 800; }
+    .p-time-4 { color: #9333ea; font-weight: 800; }
+    .p-time-5 { color: #ca8a04; font-weight: 800; }
+    .p-row-5 { background: #fefce8; }
+
     .floor-visual-box { padding: 16px; background: #f8fafc; border-radius: 8px; }
     .legend-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; font-size: 12px; font-weight: bold; }
     .legend-item { display: flex; align-items: center; gap: 6px; }
@@ -229,15 +240,101 @@
     <button class="tab-btn" onclick="switchTab('tab-rooms')">🛏️ 방배정</button>
     <button class="tab-btn" onclick="switchTab('tab-schedule')">📅 일정표</button>
     <button class="tab-btn" onclick="switchTab('tab-lodging')">📖 숙소배치도</button>
-    <button class="tab-btn" onclick="switchTab('tab-vendor')">🏛️ 계약업체</button>
     <button class="tab-btn" onclick="switchTab('tab-safety')">🌙 야간지도·안전</button>
+    <button class="tab-btn" onclick="switchTab('tab-vendor')">🏛️ 계약업체</button>
   </nav>
 
   <main class="container">
 
-    <!-- TAB: 버스배정 (학교<->공항 7대 vs 제주현지 9대 가로 탭 분할) -->
+    <!-- TAB 1: 야간지도 및 안전 (순찰 일정표 및 생활지도 수칙) -->
+    <section id="tab-safety" class="tab-content">
+      <div class="alert-banner">
+        🌙 <b>야간 생활지도 및 순찰 일정표</b>: 22:00 이후 객실 간 이동 및 외출 엄금, 취침 및 주변 순찰을 철저히 진행합니다.
+      </div>
+
+      <!-- 야간 순찰 일정표 카드 -->
+      <div class="card">
+        <div class="card-header slate">
+          <span>🌙 야간 순찰 일정표</span>
+          <span class="badge-count">3박 4일 일정</span>
+        </div>
+        <div class="table-container">
+          <table class="patrol-table">
+            <thead>
+              <tr>
+                <th style="width: 18%;">시간</th>
+                <th style="width: 24%;">9/15(화) 1일차</th>
+                <th style="width: 24%;">9/16(수) 2일차</th>
+                <th style="width: 24%;">9/17(목) 3일차</th>
+                <th style="width: 10%;">근무 내용</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="p-time-1">22:00~24:00</td>
+                <td><b>명석현</b><br>임미영</td>
+                <td><b>박원기</b><br>김서진</td>
+                <td><b>황현수</b><br>장지은</td>
+                <td rowspan="1" style="font-weight: bold; color: #1e293b;">취침 지도</td>
+              </tr>
+              <tr>
+                <td class="p-time-2">00:00~02:00</td>
+                <td><b>임나래</b><br>윤연미</td>
+                <td><b>구민정</b><br>이은주</td>
+                <td><b>김효성</b><br>명석현</td>
+                <td rowspan="3" style="font-size: 12px; color: #475569;">외부 출입 통제<br>주변 순찰<br>취침 지도</td>
+              </tr>
+              <tr>
+                <td class="p-time-3">02:00~04:00</td>
+                <td><b>황현수</b><br>김서진</td>
+                <td><b>임미영</b><br>장지은</td>
+                <td><b>박원기</b><br>임나래</td>
+              </tr>
+              <tr>
+                <td class="p-time-4">04:00~06:00</td>
+                <td><b>윤연미</b><br>구민정</td>
+                <td><b>김효성</b><br>명석현</td>
+                <td><b>이은주</b><br>황현수</td>
+              </tr>
+              <tr class="p-row-5">
+                <td class="p-time-5">06:00~08:00</td>
+                <td><b>장희승</b> <br><b>박세원</b> </td>
+                <td><b>이은주</b> <br><b>장희승</b> </td>
+                <td><b>김효성</b> <br><b>박세원</b> </td>
+                <td style="font-weight: bold; color: #854d0e;">기상 지도</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 야간 생활지도 수칙 카드 -->
+      <div class="card">
+        <div class="card-header">
+          <span>🌙 야간 생활지도 수칙</span>
+        </div>
+        <div style="padding: 16px; font-size: 13px; line-height: 2.0; color: #1e293b;">
+          <p>• <b>22:00 취침 점호</b> : 각 방 인원 확인 및 담임 보고</p>
+          <p>• <b>교사 허락 없이 다른 방 방문 또는 외출 금지</b></p>
+          <p>• <b>음주 · 흡연 · 도박(카드, 화투 등) 절대 금지</b></p>
+          <p>• <b>야간 소란 행위 금지</b> (숙소 내 큰 소리 자제)</p>
+          <p>• <b>비상구 위치 사전 안내 및 비상탈출 요령 숙지</b></p>
+          <p>• <b>이상 학생 발견 시</b>: 담임 ➔ 학년부장(박원기) ➔ 학교장(서경미) 순으로 보고</p>
+          <p>• <b>안전요원(야간) 5명 상시 배치</b> : 22:00 ~ 익일 06:00</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: 업무연락망 (실제 연락처 매핑 완료) -->
+    <section id="tab-contacts" class="tab-content">
+      <div class="alert-banner">
+        📌 전화번호를 탭하면 바로 전화 연결됩니다.
+      </div>
+      <div id="contacts-container"></div>
+    </section>
+
+    <!-- TAB 3: 버스배정 -->
     <section id="tab-bus" class="tab-content active">
-      <!-- 상단 모드 탭 (경산고 스타일 일치) -->
       <div class="bus-mode-tab-bar">
         <div class="bus-mode-btn active" id="btn-bus-school" onclick="selectBusMode('school')">
           <span class="mode-title">🏫 학교 ➔ 공항 (1·4일차)</span>
@@ -253,11 +350,10 @@
         🚌 1일차 학교 ➔ 대구공항 및 4일차 귀향 시 전세버스 7대(45인승) 배정 현황입니다.
       </div>
 
-      <!-- 버스 카드 렌더링 컨테이너 -->
       <div id="bus-cards-container"></div>
     </section>
 
-    <!-- TAB: 방배정 -->
+    <!-- TAB 4: 방배정 -->
     <section id="tab-rooms" class="tab-content">
       <div class="search-input-box">
         <span class="search-icon">🔍</span>
@@ -275,10 +371,10 @@
       <div id="rooms-view-container"></div>
     </section>
 
-    <!-- TAB: 일정표 -->
+    <!-- TAB 5: 일정표 -->
     <section id="tab-schedule" class="tab-content">
       <div class="alert-banner">
-        ✈️ 아시아나팀(1진): 9/15 09:30 OZ8123 · 대한항공팀(2진): 9/15 11:05 KE1569 / 숙소: 더 포그레이스 리조트
+        ✈️ 아시아나팀(1진): 9/15 09:30 OZ8123 · 대한항공팀(2진): 9/15 11:05 KE1569 / 숙소: 더 포그레이스 리조트[cite: 1]
       </div>
 
       <div class="day-square-bar">
@@ -311,15 +407,7 @@
       </div>
     </section>
 
-    <!-- TAB: 업무연락망 -->
-    <section id="tab-contacts" class="tab-content">
-      <div class="alert-banner">
-        📌 전화번호를 탭하면 바로 전화 연결됩니다.
-      </div>
-      <div id="contacts-container"></div>
-    </section>
-
-    <!-- TAB: 참가학생 -->
+    <!-- TAB 6: 참가학생 -->
     <section id="tab-students" class="tab-content">
       <div class="sub-filter-bar" id="student-filter-bar">
         <button class="filter-btn active" onclick="filterStudentView('all')">👥 전체 219명</button>
@@ -332,7 +420,7 @@
       <div id="students-container"></div>
     </section>
 
-    <!-- TAB: 숙소배치도 -->
+    <!-- TAB 7: 숙소배치도 -->
     <section id="tab-lodging" class="tab-content">
       <div class="sub-filter-bar">
         <button class="filter-btn active" onclick="showFloorMap('f1')">1F 부대시설</button>
@@ -461,7 +549,7 @@
       </div>
     </section>
 
-    <!-- TAB: 계약업체 -->
+    <!-- TAB 8: 계약업체 -->
     <section id="tab-vendor" class="tab-content">
       <div class="card">
         <div class="card-header"><span>✈️ 항공권 예약 내역</span></div>
@@ -485,16 +573,10 @@
           더 포그레이스 호텔앤리조트 (제주 서귀포시 성산읍 해맞이해안로 2670 / ☎ 064-797-7700)
         </div>
       </div>
-    </section>
-
-    <!-- TAB: 안전수칙 -->
-    <section id="tab-safety" class="tab-content">
       <div class="card">
-        <div class="card-header slate"><span>안전 및 생활지도 지침</span></div>
-        <div style="padding: 16px; font-size: 13px; line-height: 1.8;">
-          • <b>취침 및 점호</b>: 22:00 이후 객실 간 무단 이동 및 외출 엄금<br>
-          • <b>배터리 규정</b>: 보조 배터리는 반드시 기내 휴대(수하물 위탁 절대 금지)<br>
-          • <b>비상 연락망</b>: 응급 상황 발생 시 본부(서경미 교장선생님 / 박원기 부장선생님)로 즉시 연락
+        <div class="card-header slate"><span>📅 여행사</span></div>
+        <div style="padding: 14px; font-size: 13px;">
+          구미관광사 대표 (☎ 010-3501-8089)
         </div>
       </div>
     </section>
@@ -505,7 +587,43 @@
     const APP_DATA = {
       headerDesc: "2026. 9. 15(화) ~ 9. 18(금) · 3박 4일 · 총 219명 (학생 205, 인솔 14)",
       helpBanner: "⚠️ 도움반 학생 3명(이지원, 여용민, 박세현) 별도 지도교사 인솔 체계 운영 (지도교사: 박세원)",
-      // 학교<->공항 7대 및 제주현지 9대 버스 데이터 구축
+      // 인솔교사 연락처 데이터
+      contactGroups: [
+        {
+          groupTitle: "🎯 총괄",
+          headerCls: "slate",
+          members: [
+            {name: "서경미", phone: "010-2526-5578", star: true, role: "교장 · 전체 총괄", isFemale: true, isStar: false},
+            {name: "박원기", phone: "010-2768-3938", star: true, role: "2학년부장 · 1·2진 총괄 대표 · 2반 담임", isFemale: false, isStar: true},
+            {name: "장희승", phone: "010-8578-3671", star: true, role: "학생지도부장 · 본부 지원", isFemale: false, isStar: false}
+          ]
+        },
+        {
+          groupTitle: "✈️ 1진 인솔교사 (9/15 09:30 OZ8123 아시아나)",
+          headerCls: "",
+          members: [
+            {name: "명석현", phone: "010-4555-0989", star: false, role: "1반 담임", isFemale: false, isStar: false},
+            {name: "박원기", phone: "010-2768-3938", star: true, role: "2반 담임 · 1진 대표 인솔", isFemale: false, isStar: true},
+            {name: "임미영", phone: "010-2536-5417", star: false, role: "4반 담임", isFemale: true, isStar: false},
+            {name: "김서진", phone: "010-3574-7564", star: false, role: "5반 담임", isFemale: true, isStar: false},
+            {name: "장지은", phone: "010-7442-3590", star: false, role: "6반 담임", isFemale: true, isStar: false},
+            {name: "박세원", phone: "010-2390-4346", star: false, role: "도움반 담임", isFemale: true, isStar: false}
+          ]
+        },
+        {
+          groupTitle: "✈️ 2진 인솔교사 (9/15 11:05 KE1569 대한항공)",
+          headerCls: "green",
+          members: [
+            {name: "황현수", phone: "010-3321-6176", star: true, role: "3반 담임 · 2진 대표 인솔", isFemale: false, isStar: true},
+            {name: "임나래", phone: "010-5233-0329", star: false, role: "7반 담임", isFemale: true, isStar: false},
+            {name: "윤연미", phone: "010-5106-3250", star: false, role: "8반 담임", isFemale: true, isStar: false},
+            {name: "구민정", phone: "010-9492-7696", star: false, role: "9반 담임", isFemale: true, isStar: false},
+            {name: "김효성", phone: "010-4414-3380", star: false, role: "부담임 (8호차)", isFemale: false, isStar: false},
+            {name: "이은주", phone: "010-7393-9023", star: false, role: "부담임 (9호차)", isFemale: true, isStar: false}
+          ]
+        }
+      ],
+      // 버스 데이터
       busData: {
         school: [
           {
@@ -738,44 +856,9 @@
         {name: "윤연미 선생님", role: "8반 담임", bus: "1조 8호차"},
         {name: "구민정 선생님", role: "9반 담임", bus: "3조 9호차"},
         {name: "박세원 선생님", role: "도움반 지도교사", bus: "2조 2호차"},
-        {name: "장희승 선생님", role: "인솔 교사", bus: "1조 1호차"},
-        {name: "김효성 선생님", role: "인솔 교사", bus: "1조 8호차"},
-        {name: "이은주 선생님", role: "인솔 교사", bus: "3조 9호차"}
-      ],
-      contactGroups: [
-        {
-          groupTitle: "🎯 총괄",
-          headerCls: "slate",
-          members: [
-            {name: "서경미", star: false, role: "학교장 · 전체 총괄", isFemale: true, isStar: false},
-            {name: "박원기", star: true, role: "2학년부장 · 1·2진 총괄 대표 · 2반 담임", isFemale: false, isStar: true},
-            {name: "장희승", star: true, role: "학생 부장 · 본부 지원", isFemale: false, isStar: false}
-          ]
-        },
-        {
-          groupTitle: "✈️ 1진 인솔교사 (9/15 09:30 OZ8123 아시아나)",
-          headerCls: "",
-          members: [
-            {name: "명석현", star: false, role: "1반 담임 · 1진 인솔", isFemale: false, isStar: false},
-            {name: "박원기", star: true, role: "2반 담임 · 1진 대표 인솔", isFemale: false, isStar: true},
-            {name: "임미영", star: false, role: "4반 담임", isFemale: true, isStar: false},
-            {name: "김서진", star: false, role: "5반 담임", isFemale: true, isStar: false},
-            {name: "장지은", star: false, role: "6반 담임", isFemale: true, isStar: false},
-            {name: "박세원", star: false, role: "도움반 담임", isFemale: false, isStar: false}
-          ]
-        },
-        {
-          groupTitle: "✈️ 2진 인솔교사 (9/15 11:05 KE1569 대한항공)",
-          headerCls: "green",
-          members: [
-            {name: "황현수", star: true, role: "3반 담임 · 2진 대표 인솔", isFemale: false, isStar: true},
-            {name: "임나래", star: false, role: "7반 담임", isFemale: true, isStar: false},
-            {name: "윤연미", star: false, role: "8반 담임", isFemale: true, isStar: false},
-            {name: "구민정", star: false, role: "9반 담임", isFemale: true, isStar: false},
-            {name: "김효성", star: false, role: "8호차 부담임", isFemale: false, isStar: false},
-            {name: "이은주", star: false, role: "9호차 부담임", isFemale: true, isStar: false}
-          ]
-        }
+        {name: "장희승 선생님", role: "학생지도부장", bus: "1조 1호차"},
+        {name: "김효성 선생님", role: "부담임 (8호차)", bus: "1조 8호차"},
+        {name: "이은주 선생님", role: "부담임 (9호차)", bus: "3조 9호차"}
       ],
       roomsData: [
         {team: "teachers", classTitle: "교직원 인솔실", room: "601호", members: ["서경미(학교장)"], isTeacher: true},
@@ -1006,7 +1089,6 @@
 
     let currentBusMode = 'school';
 
-    // 버스 모드(학교<->공항 vs 제주현지) 전환 핸들러
     function selectBusMode(mode) {
       currentBusMode = mode;
       document.getElementById('btn-bus-school').classList.toggle('active', mode === 'school');
@@ -1022,7 +1104,13 @@
       renderBusCards();
     }
 
-    // 버스 카드 렌더링 (경산고 스타일 일치)
+    // 버스배정 인솔교사 성별 아이콘 헬퍼 (장희승, 박원기, 김효성, 황현수, 명석현 = 👨‍🏫 / 나머지 = 👩‍🏫)
+    function getTeacherIcon(tName) {
+      const maleList = ["장희승", "박원기", "김효성", "황현수", "명석현"];
+      const isMale = maleList.some(m => tName.includes(m));
+      return isMale ? "👨‍🏫" : "👩‍🏫";
+    }
+
     function renderBusCards() {
       const container = document.getElementById('bus-cards-container');
       const list = APP_DATA.busData[currentBusMode];
@@ -1041,7 +1129,7 @@
             </div>
             <div class="bus-card-teacher">
               <span>인솔교사:</span>
-              ${b.teachers.map(t => `<span class="teacher-pill">👨‍🏫 ${t}</span>`).join('')}
+              ${b.teachers.map(t => `<span class="teacher-pill">${getTeacherIcon(t)} ${t}</span>`).join('')}
             </div>
             <div class="bus-card-students">
               ${b.students.map(s => `<span class="bus-st-pill">${s}</span>`).join('')}
@@ -1305,10 +1393,10 @@
                   <div class="contact-name">
                     ${m.name} ${m.star ? '<span class="star-badge">⭐</span>' : ''}
                   </div>
-                  <div class="contact-role">${m.role}</div>
+                  <div class="contact-role">${m.role} · ${m.phone}</div>
                 </div>
               </div>
-              <a href="tel:010-0000-0000" class="call-btn">📞 전화</a>
+              <a href="tel:${m.phone}" class="call-btn">📞 전화</a>
             </div>
           `;
         });
